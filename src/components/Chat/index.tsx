@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import './Chat.css';
 import { AssistantConfig, assistants, defaultAssistant, findAssistantById } from '../../config/prompts';
+import VoiceControlsEnhanced from './VoiceControlsEnhanced';
 
 interface Message {
   id: number;
@@ -40,6 +41,7 @@ const Chat: React.FC = () => {
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState<boolean>(false);
+  const [currentBotMessage, setCurrentBotMessage] = useState<string | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Effetto per aggiornare il messaggio di sistema quando cambia l'assistente
@@ -53,6 +55,9 @@ const Chat: React.FC = () => {
         timestamp: new Date(),
       }
     ]);
+    
+    // Imposta il messaggio di benvenuto come messaggio corrente per la lettura vocale
+    setCurrentBotMessage(currentAssistant.welcomeMessage);
     
     // Aggiorna il prompt di sistema nella cronologia chat
     setChatHistory([
@@ -98,6 +103,9 @@ const Chat: React.FC = () => {
         timestamp: new Date(),
       }
     ]);
+    
+    // Resetta il messaggio corrente del bot
+    setCurrentBotMessage(currentAssistant.welcomeMessage);
     
     // Mantieni solo il messaggio di sistema
     setChatHistory([
@@ -209,6 +217,9 @@ const Chat: React.FC = () => {
       
       setMessages(prevMessages => [...prevMessages, botResponse]);
       
+      // Imposta il messaggio corrente del bot per la lettura vocale
+      setCurrentBotMessage(botReply);
+      
       // Aggiorna la cronologia della chat
       setChatHistory(prev => [...prev, { role: 'assistant', content: botReply }]);
     } catch (error) {
@@ -243,6 +254,15 @@ const Chat: React.FC = () => {
   // Formatta l'ora del messaggio
   const formatTime = (date: Date): string => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  // Funzione per gestire il testo ricevuto dal riconoscimento vocale
+  const handleVoiceText = (text: string) => {
+    console.log('[handleVoiceText] Testo ricevuto:', text);
+    if (text.trim() === '') return;
+    setInputValue(text); // Inserisce il testo riconosciuto nell'input, ma NON invia automaticamente
+    // Stampa il testo tradotto nella console
+    console.log('[handleVoiceText] Testo tradotto:', text);
   };
 
   return (
@@ -349,9 +369,13 @@ const Chat: React.FC = () => {
           </div>
         )}
       </div>
-      
-      {/* Input per scrivere il messaggio */}
+        {/* Input per scrivere il messaggio */}
       <div className="input-container">
+        <VoiceControlsEnhanced 
+          onTextReceived={handleVoiceText}
+          isTyping={isTyping}
+          currentMessage={currentBotMessage}
+        />
         <input
           type="text"
           value={inputValue}

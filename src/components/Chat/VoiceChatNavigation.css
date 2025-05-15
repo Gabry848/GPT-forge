@@ -1,0 +1,46 @@
+.voice-chat-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.voice-chat-tabs {
+  display: flex;
+  background-color: #f5f7fa;
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
+  margin-bottom: 1px;
+}
+
+.voice-chat-tabs .tab {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #444;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.voice-chat-tabs .tab:hover {
+  background-color: #e9ecf1;
+}
+
+.voice-chat-tabs .tab.active {
+  background-color: #f0f4ff;
+  color: #0084ff;
+  border-bottom: 3px solid #0084ff;
+}
+
+.voice-chat-content {
+  flex: 1;
+  display: flex;
+  overflow: auto;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}

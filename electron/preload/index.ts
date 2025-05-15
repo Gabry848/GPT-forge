@@ -23,6 +23,55 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   // ...
 })
 
+// Esponi API specifiche per il riconoscimento vocale e la sintesi
+contextBridge.exposeInMainWorld('electronSpeechAPI', {
+  // Funzione per richiedere l'accesso al microfono
+  requestMicrophoneAccess: async () => {
+    try {
+      // Richiede esplicitamente il permesso per il microfono
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        } 
+      });
+      
+      // Verifica se lo stream è attivo
+      const tracks = stream.getAudioTracks();
+      const hasActiveTracks = tracks.some(track => track.enabled && track.readyState === 'live');
+      
+      // Log delle informazioni per debug
+      console.log('Stream microfono:', stream);
+      console.log('Tracce audio:', tracks.map(t => ({
+        label: t.label,
+        enabled: t.enabled,
+        muted: t.muted,
+        readyState: t.readyState
+      })));
+      
+      // Rilascia lo stream dopo aver ottenuto il permesso
+      stream.getTracks().forEach(track => track.stop());
+      
+      return hasActiveTracks;
+    } catch (error) {
+      console.error('Errore nell\'accesso al microfono:', error);
+      return false;
+    }
+  },
+  
+  // Verifica se il microfono è disponibile
+  checkMicrophoneAvailability: async () => {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      return devices.some(device => device.kind === 'audioinput');
+    } catch (error) {
+      console.error('Errore nel controllo dei dispositivi audio:', error);
+      return false;
+    }
+  }
+});
+
 // --------- Preload scripts loading ---------
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
   return new Promise(resolve => {

@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import UpdateElectron from '@/components/update'
-import Chat from '@/components/Chat'
+import VoiceChatNavigation from '@/components/Chat/VoiceChatNavigation'
 import './App.css'
 
 function App() {
   return (
     <div className='App'>
-      <Chat />
+      <VoiceChatNavigation />
     </div>
   )
 }

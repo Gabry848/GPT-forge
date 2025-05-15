@@ -1,0 +1,253 @@
+.voice-help-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.voice-help-container {
+  background-color: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.voice-help-header {
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+}
+
+.voice-help-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #333;
+}
+
+.voice-help-tabs {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  background-color: #fafafa;
+}
+
+.help-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 12px 5px;
+  font-size: 15px;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.help-tab:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.help-tab.active {
+  color: #0084ff;
+  border-bottom: 3px solid #0084ff;
+  background-color: white;
+}
+
+.voice-help-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.help-section h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.feature-box {
+  display: flex;
+  margin-bottom: 25px;
+  background-color: #f8faff;
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 4px solid #0084ff;
+}
+
+.feature-icon {
+  background-color: #dbeaff;
+  color: #0066cc;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.feature-content h4 {
+  margin: 0 0 5px 0;
+  color: #0066cc;
+  font-size: 1rem;
+}
+
+.feature-content p {
+  margin: 0;
+  color: #444;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.troubleshooting-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #fff9f0;
+  border-radius: 8px;
+  border-left: 4px solid #ff9800;
+}
+
+.troubleshooting-item h4 {
+  margin: 0 0 10px 0;
+  color: #e67e00;
+  font-size: 1rem;
+}
+
+.troubleshooting-item ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.troubleshooting-item li {
+  margin-bottom: 5px;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.troubleshooting-link {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.troubleshooting-link p {
+  margin: 0;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.tip-item {
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #f0f8ff;
+  border-radius: 8px;
+}
+
+.tip-item h4 {
+  margin: 0 0 5px 0;
+  color: #0066cc;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.tip-item p {
+  margin: 0;
+  color: #444;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.voice-help-footer {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #eee;
+  background-color: #fafafa;
+}
+
+.help-action-button {
+  padding: 8px 16px;
+  background-color: #0084ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.help-action-button:hover {
+  background-color: #0073e6;
+}
+
+@media (max-width: 768px) {
+  .voice-help-container {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .feature-box {
+    flex-direction: column;
+  }
+  
+  .feature-icon {
+    margin-bottom: 10px;
+    margin-right: 0;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+}
