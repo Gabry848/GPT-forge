@@ -24,11 +24,9 @@ declare module 'react-speech-recognition' {
 
   export const useSpeechRecognition: (options?: SpeechRecognitionOptions) => SpeechRecognitionResults;
 
-  export default {
-    startListening: (options?: SpeechRecognitionListenOptions) => Promise<void>;
-    stopListening: () => void;
-    abortListening: () => void;
-    browserSupportsSpeechRecognition: boolean;
-    getRecognition: () => any;
-  };
+  export const startListening: (options?: SpeechRecognitionListenOptions) => Promise<void>;
+  export const stopListening: () => void;
+  export const abortListening: () => void;
+  export const browserSupportsSpeechRecognition: boolean;
+  export const getRecognition: () => any;
 }
