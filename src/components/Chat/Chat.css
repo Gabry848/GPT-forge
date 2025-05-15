@@ -1,0 +1,407 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Occupa tutta l'altezza della viewport */
+  width: 100%; /* Occupa tutta la larghezza disponibile */
+  max-width: none; /* Rimuovi la larghezza massima */
+  margin: 0; /* Rimuovi i margini */
+  background-color: #f5f7fb;
+  overflow: hidden;
+  box-shadow: none; /* Rimuovi l'ombra */
+  position: relative;
+  border-radius: 0; /* Rimuovi i bordi arrotondati */
+}
+
+.chat-header {
+  padding: 20px;
+  background-color: #0084ff;
+  color: white;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 10; /* Assicura che l'intestazione rimanga sopra */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.chat-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.settings-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 5px;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-button:hover {
+  opacity: 1;
+}
+
+.settings-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 200px;
+  z-index: 20;
+  overflow: hidden;
+  margin-top: 5px;
+  animation: slide-down 0.2s ease;
+}
+
+.clear-chat-button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 15px;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.clear-chat-button:hover {
+  background-color: #f0f2f5;
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.messages-container {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: #f8f9fb;
+  min-height: 0; /* Importante per consentire al container di contrarsi */
+}
+
+.message-bubble {
+  max-width: 65%; /* Larghezza massima ridotta per un aspetto migliore su desktop */
+  padding: 14px 18px;
+  border-radius: 18px;
+  position: relative;
+  word-wrap: break-word;
+  line-height: 1.5; /* Migliore leggibilità */
+  font-size: 16px; /* Dimensione carattere standardizzata */
+}
+
+.user-message {
+  align-self: flex-end;
+  background-color: #0084ff;
+  color: white;
+  border-bottom-right-radius: 4px;
+  margin-left: 20%; /* Spazio extra a sinistra per messaggi utente */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+}
+
+.bot-message {
+  align-self: flex-start;
+  background-color: #e4e6eb;
+  color: #050505;
+  border-bottom-left-radius: 4px;
+  margin-right: 20%; /* Spazio extra a destra per messaggi bot */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+}
+
+.message-content {
+  margin-bottom: 4px;
+}
+
+.message-time {
+  font-size: 0.7rem;
+  opacity: 0.8;
+  text-align: right;
+}
+
+.input-container {
+  display: flex;
+  padding: 16px 20px;
+  background-color: white;
+  border-top: 1px solid #e4e6eb;
+  z-index: 10; /* Assicura che l'area di input rimanga visibile */
+}
+
+.message-input {
+  flex: 1;
+  padding: 14px 18px;
+  border: 1px solid #e4e6eb;
+  border-radius: 24px;
+  margin-right: 12px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Ombra interna sottile */
+}
+
+.message-input:focus {
+  border-color: #0084ff;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 0 0 2px rgba(0, 132, 255, 0.2); /* Effetto focus */
+}
+
+.send-button {
+  background-color: #0084ff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  min-width: 100px; /* Larghezza minima per il pulsante */
+  font-size: 15px; /* Dimensione testo leggermente aumentata */
+}
+
+.send-button:hover {
+  background-color: #0077e6;
+  transform: translateY(-1px); /* Leggero effetto di elevazione al passaggio del mouse */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Ombra al passaggio del mouse */
+}
+
+.send-button:disabled, .message-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.send-button:disabled:hover {
+  background-color: #0084ff;
+}
+
+/* Personalizzazione della scrollbar */
+.messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+/* Stile per dispositivi mobili */
+@media (max-width: 768px) {
+  .message-bubble {
+    max-width: 85%;
+  }
+}
+
+/* Indicatore di digitazione */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  background-color: #e4e6eb;
+  padding: 14px 18px;
+  border-radius: 18px;
+  border-bottom-left-radius: 4px;
+  margin-top: 8px;
+  width: 70px; /* Leggermente più largo */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Ombra sottile */
+}
+
+.typing-bubble {
+  background-color: #777; /* Colore leggermente più scuro */
+  border-radius: 50%;
+  height: 9px; /* Leggermente più grande */
+  width: 9px; /* Leggermente più grande */
+  margin: 0 4px;
+  animation: typing-bubble 1.2s infinite; /* Animazione leggermente più lenta */
+  opacity: 0.7; /* Opacità leggermente aumentata */
+}
+
+.typing-bubble:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.typing-bubble:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-bubble:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Stile per il messaggio di errore */
+.error-message {
+  align-self: center;
+  background-color: #ff4d4f;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin: 10px 0;
+  font-size: 14px;
+  max-width: 80%;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes typing-bubble {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Stili per il selettore di assistenti */
+.assistant-selector {
+  padding: 15px;
+  border-top: 1px solid #eaeaea;
+}
+
+.assistant-selector label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.assistant-selector select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.assistant-selector select:focus {
+  outline: none;
+  border-color: #0084ff;
+  box-shadow: 0 0 0 2px rgba(0, 132, 255, 0.2);
+}
+
+/* Stili per il form del prompt personalizzato */
+.custom-prompt-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 30;
+  animation: fade-in 0.2s ease;
+}
+
+.custom-prompt-form h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+.prompt-description {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.custom-prompt-form textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  resize: vertical;
+  margin-bottom: 15px;
+}
+
+.custom-prompt-form textarea:focus {
+  outline: none;
+  border-color: #0084ff;
+  box-shadow: 0 0 0 2px rgba(0, 132, 255, 0.1);
+}
+
+.prompt-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-button {
+  padding: 8px 15px;
+  background-color: #f0f2f5;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #e4e6eb;
+}
+
+.save-button {
+  padding: 8px 15px;
+  background-color: #0084ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.save-button:hover {
+  background-color: #0077e6;
+}
+
+.save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
