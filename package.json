@@ -1,5 +1,5 @@
 {
-  "name": "gpt-fortge",
+  "name": "gpt-forge",
   "version": "1.0.0",
   "main": "dist-electron/main/index.js",
   "description": "A simple app for use GPT 4 with a base promt",
