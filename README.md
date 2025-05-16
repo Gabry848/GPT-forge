@@ -1,91 +1,63 @@
-# electron-vite-react
+# News Trading AI Desktop
 
-[![awesome-vite](https://awesome.re/mentioned-badge.svg)](https://github.com/vitejs/awesome-vite)
-![GitHub stars](https://img.shields.io/github/stars/caoxiemeihao/vite-react-electron?color=fa6470)
-![GitHub issues](https://img.shields.io/github/issues/caoxiemeihao/vite-react-electron?color=d8b22d)
-![GitHub license](https://img.shields.io/github/license/caoxiemeihao/vite-react-electron)
-[![Required Node.JS >= 14.18.0 || >=16.0.0](https://img.shields.io/static/v1?label=node&message=14.18.0%20||%20%3E=16.0.0&logo=node.js&color=3f893e)](https://nodejs.org/about/releases)
+Applicazione desktop avanzata per la chat AI, analisi di notizie economiche e supporto al trading, sviluppata con Electron, React e Vite.
 
-English | [简体中文](README.zh-CN.md)
+## 🚀 Funzionalità principali
 
-## 👀 Overview
+- **Chat AI** con assistenti specializzati (finanza, news, trading, TradingView, Volsys)
+- **Riconoscimento vocale**: invio messaggi tramite voce
+- **Sintesi vocale**: lettura automatica delle risposte del bot
+- **Personalizzazione vocale**: scegli voce, velocità e tono
+- **Diagnostica microfono**: strumenti integrati per test e risoluzione problemi
+- **Gestione API Key**: supporto OpenAI API key locale
+- **Compatibilità**: funziona sia come app Electron che in browser (con alcune differenze)
 
-📦 Ready out of the box  
-🎯 Based on the official [template-react-ts](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts), project structure will be familiar to you  
-🌱 Easily extendable and customizable  
-💪 Supports Node.js API in the renderer process  
-🔩 Supports C/C++ native addons  
-🐞 Debugger configuration included  
-🖥 Easy to implement multiple windows  
+## ⚡ Installazione e Avvio Rapido
 
-## 🛫 Quick Setup
+```powershell
+# Clona il repository
+ git clone <repo-url>
+ cd news-trading
 
-```sh
-# clone the project
-git clone https://github.com/electron-vite/electron-vite-react.git
+# Installa le dipendenze
+ npm install
 
-# enter the project directory
-cd electron-vite-react
-
-# install dependency
-npm install
-
-# develop
-npm run dev
+# Avvia in modalità sviluppo
+ npm run dev
 ```
 
-## 🐞 Debug
+## 🗂️ Struttura delle cartelle
 
-![electron-vite-react-debug.gif](/electron-vite-react-debug.gif)
-
-## 📂 Directory structure
-
-Familiar React application structure, just with `electron` folder on the top :wink:  
-*Files in this folder will be separated from your React application and built into `dist-electron`*  
-
-```tree
-├── electron                                 Electron-related code
-│   ├── main                                 Main-process source code
-│   └── preload                              Preload-scripts source code
-│
-├── release                                  Generated after production build, contains executables
-│   └── {version}
-│       ├── {os}-{os_arch}                   Contains unpacked application executable
-│       └── {app_name}_{version}.{ext}       Installer for the application
-│
-├── public                                   Static assets
-└── src                                      Renderer source code, your React application
+```
+├── electron/           # Codice Electron (main, preload)
+├── src/                # Applicazione React (componenti, assets, config)
+│   ├── components/Chat # Modulo chat vocale, assistenti, diagnostica
+│   ├── config/         # Configurazione assistenti e prompt
+│   └── ...
+├── public/             # Asset statici
+├── release/            # Build e pacchetti eseguibili
+└── ...
 ```
 
-<!--
-## 🚨 Be aware
+## 📚 Documentazione
 
-This template integrates Node.js API to the renderer process by default. If you want to follow **Electron Security Concerns** you might want to disable this feature. You will have to expose needed API by yourself.  
+- [Documentazione Chat Vocale](src/components/Chat/README.md)
+- [Guida Aggiornamenti](src/components/update/README.md)
 
-To get started, remove the option as shown below. This will [modify the Vite configuration and disable this feature](https://github.com/electron-vite/vite-plugin-electron-renderer#config-presets-opinionated).
+## 💡 Note aggiuntive
 
-```diff
-# vite.config.ts
+- L'applicazione utilizza le API OpenAI: inserisci la tua API key nelle impostazioni.
+- Per la migliore esperienza vocale, usa Chrome, Edge o l'app desktop.
+- Diagnostica e suggerimenti vocali integrati nella sezione Chat.
 
-export default {
-  plugins: [
-    ...
--   // Use Node.js API in the Renderer-process
--   renderer({
--     nodeIntegration: true,
--   }),
-    ...
-  ],
-}
-```
--->
+## 🛠️ Personalizzazione
 
-## 🔧 Additional features
+- Puoi aggiungere nuovi assistenti modificando `src/config/prompts.ts`.
+- Tutti gli stili della chat sono modularizzati in `src/components/Chat/`.
 
-1. electron-updater 👉 [see docs](src/components/update/README.md)
-1. playwright
+## 📦 Build e rilascio
 
-## ❔ FAQ
+- Esegui `npm run build` per la build di produzione.
+- I pacchetti eseguibili si trovano in `release/` dopo la build.
 
-- [C/C++ addons, Node.js modules - Pre-Bundling](https://github.com/electron-vite/vite-plugin-electron-renderer#dependency-pre-bundling)
-- [dependencies vs devDependencies](https://github.com/electron-vite/vite-plugin-electron-renderer#dependencies-vs-devdependencies)
+---
