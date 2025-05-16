@@ -6,11 +6,13 @@ on:
     paths-ignore:
       - "**.md"
       - "**.spec.js"
-      - ".idea/**"
-      - ".vscode/**"
+      - ".idea"
+      - ".vscode"
       - ".dockerignore"
       - "Dockerfile"
       - ".gitignore"
+      - ".github/**"
+      - "!.github/workflows/build.yml"
 
 jobs:
   build:
@@ -30,16 +32,21 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+        run: npm install
 
       - name: Build Release Files
         run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Build Artifact
+      - name: List Release Folder Contents
+        run: |
+          echo "Contenuto della cartella release:"
+          ls -R release || echo "La cartella release non esiste"
+
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ matrix.os }}
+          name: release_on_${{ matrix.os }}
           path: release/
           retention-days: 5
