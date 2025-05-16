@@ -12,6 +12,17 @@
   border-radius: 0; /* Rimuovi i bordi arrotondati */
 }
 
+/* Nuovo contenitore centrale per i messaggi */
+.chat-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  max-width: 900px; /* Limita la larghezza massima su schermi grandi */
+  margin: 0 auto; /* Centra il contenuto */
+  overflow: hidden; /* Impedisce lo scrolling orizzontale */
+}
+
 .chat-header {
   padding: 20px;
   background-color: #0084ff;
@@ -105,6 +116,12 @@
   gap: 16px;
   background-color: #f8f9fb;
   min-height: 0; /* Importante per consentire al container di contrarsi */
+  /* Aggiungiamo un contenitore centrale per limitare la larghezza della chat */
+  align-items: stretch; /* Cambiato da "center" a "stretch" per enfatizzare il posizionamento laterale */
+  max-width: 800px; /* Limitiamo la larghezza massima del contenitore */
+  margin: 0 auto; /* Centrato orizzontalmente */
+  padding-left: 0 !important;
+  margin-left: 0 !important;
 }
 
 .message-bubble {
@@ -115,6 +132,7 @@
   word-wrap: break-word;
   line-height: 1.5; /* Migliore leggibilità */
   font-size: 16px; /* Dimensione carattere standardizzata */
+  width: 100%; /* Permette ai messaggi di avere una larghezza uniforme */
 }
 
 .user-message {
@@ -122,8 +140,10 @@
   background-color: #0084ff;
   color: white;
   border-bottom-right-radius: 4px;
-  margin-left: 20%; /* Spazio extra a sinistra per messaggi utente */
+  margin-left: auto; /* Sposta i messaggi dell'utente a destra */
+  margin-right: 10px; /* Aggiunge un po' di margine a destra per distanziarsi dal bordo */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+  text-align: right;
 }
 
 .bot-message {
@@ -131,18 +151,74 @@
   background-color: #e4e6eb;
   color: #050505;
   border-bottom-left-radius: 4px;
-  margin-right: 20%; /* Spazio extra a destra per messaggi bot */
+  margin-right: auto; /* Sposta i messaggi del bot a sinistra */
+  margin-left: 10px; /* Aggiunge un po' di margine a sinistra per distanziarsi dal bordo */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+  text-align: left;
+}
+
+.user-message,
+.bot-message {
+  max-width: 70%; /* Larghezza massima ridotta rispetto a prima */
+  width: fit-content; /* Adatta la larghezza al contenuto */
+}
+
+/* Allineamento del testo specifico per ogni tipo di messaggio */
+.user-message .message-info {
+  flex-direction: row-reverse; /* Inverte l'ordine per i messaggi dell'utente */
+}
+
+.bot-message .message-info {
+  flex-direction: row; /* Ordine normale per i messaggi del bot */
+}
+
+@media (max-width: 1024px) {
+  .user-message,
+  .bot-message {
+    max-width: 75%;
+  }
+  
+  .messages-container {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-message,
+  .bot-message {
+    max-width: 85%;
+  }
+  
+  .messages-container {
+    padding: 10px;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+  .bot-message {
+    margin-left: 0 !important;
+  }
+  .user-message {
+    margin-left: auto !important;
+  }
 }
 
 .message-content {
   margin-bottom: 4px;
 }
 
-.message-time {
+.message-info {
+  display: flex;
+  justify-content: space-between;
   font-size: 0.7rem;
   opacity: 0.8;
-  text-align: right;
+}
+
+.message-sender {
+  font-weight: 500;
+}
+
+.message-time {
+  font-size: 0.7rem;
 }
 
 .input-container {
@@ -229,7 +305,8 @@
   border-radius: 18px;
   border-bottom-left-radius: 4px;
   margin-top: 8px;
-  width: 70px; /* Leggermente più largo */
+  width: fit-content;
+  max-width: 70%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Ombra sottile */
 }
 
@@ -601,5 +678,160 @@
     min-width: 0;
     margin-left: 0 !important;
     margin-right: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-message {
+    margin-left: 10%;
+    margin-right: 0;
+    text-align: right;
+  }
+  .bot-message {
+    margin-right: 10%;
+    margin-left: 0;
+    text-align: left;
+  }
+}
+
+/* Allineamento specifico: bot a sinistra, user a destra */
+.message-bubble.bot-message {
+  margin-left: 10px !important;
+  margin-right: auto !important;
+  align-self: flex-start !important;
+  width: fit-content !important;
+  max-width: 70% !important;
+}
+
+.message-bubble.user-message {
+  margin-left: auto !important;
+  margin-right: 10px !important;
+  align-self: flex-end !important;
+  width: fit-content !important;
+  max-width: 70% !important;
+}
+
+.message-bubble.bot-message {
+  margin-left: 0 !important;
+}
+
+.message-bubble.user-message {
+  margin-left: auto !important;
+}
+
+.api-key-section label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: #333;
+}
+.api-key-section input[type="text"] {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.api-key-section button {
+  font-size: 14px;
+  padding: 6px 0;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.api-key-section button:hover {
+  opacity: 0.9;
+}
+.api-key-section .api-key-info {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* Forza l'allineamento a sinistra senza margini o padding */
+.messages-container {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  align-items: flex-start !important;
+}
+
+.message-bubble.bot-message {
+  margin-left: 0 !important;
+  align-self: flex-start !important;
+}
+
+.message-bubble.user-message {
+  margin-left: auto !important;
+  align-self: flex-end !important;
+}
+
+@media (max-width: 768px) {
+  .messages-container {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    align-items: flex-start !important;
+  }
+  .bot-message {
+    margin-left: 0 !important;
+    align-self: flex-start !important;
+  }
+  .user-message {
+    margin-left: auto !important;
+    align-self: flex-end !important;
+  }
+}
+
+/* Soluzione definitiva: elimina ogni max-width e margin dal container e dai messaggi, allinea tutto a sinistra */
+.messages-container {
+  max-width: 100vw !important;
+  width: 100vw !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  align-items: flex-start !important;
+}
+
+.message-bubble {
+  max-width: 100vw !important;
+  width: 100% !important;
+  margin: 0 !important;
+  border-radius: 0 18px 18px 18px !important;
+}
+
+.message-bubble.bot-message {
+  margin-left: 0 !important;
+  align-self: flex-start !important;
+  border-radius: 0 18px 18px 18px !important;
+}
+
+.message-bubble.user-message {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  align-self: flex-end !important;
+  border-radius: 18px 0 18px 18px !important;
+}
+
+@media (max-width: 768px) {
+  .messages-container {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-items: flex-start !important;
+  }
+  .message-bubble {
+    max-width: 100vw !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  .bot-message {
+    margin-left: 0 !important;
+    align-self: flex-start !important;
+  }
+  .user-message {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    align-self: flex-end !important;
   }
 }

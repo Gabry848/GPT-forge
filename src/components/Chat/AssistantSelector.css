@@ -1,0 +1,26 @@
+/* Selettore assistente */
+.assistant-selector {
+  padding: 15px;
+  border-top: 1px solid #eaeaea;
+}
+.assistant-selector label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+.assistant-selector select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+.assistant-selector select:focus {
+  outline: none;
+  border-color: #0084ff;
+  box-shadow: 0 0 0 2px rgba(0, 132, 255, 0.2);
+}

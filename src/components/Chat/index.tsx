@@ -1,5 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import './Chat.css';
+import './ChatContainer.css';
+import './ChatHeader.css';
+import './Messages.css';
+import './InputArea.css';
+import './SettingsMenu.css';
+import './AssistantSelector.css';
+import './CustomPromptForm.css';
+import './ApiKeySection.css';
 import { AssistantConfig, assistants, defaultAssistant, findAssistantById } from '../../config/prompts';
 import VoiceControlsEnhanced from './VoiceControlsEnhanced';
 
@@ -44,6 +51,38 @@ const Chat: React.FC = () => {
   const [currentBotMessage, setCurrentBotMessage] = useState<string | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
+  const [apiKeyInput, setApiKeyInput] = useState<string>('');
+  const [customApiKey, setCustomApiKey] = useState<string | null>(null);
+
+  // Carica la chiave API da localStorage all'avvio
+  useEffect(() => {
+    const storedKey = localStorage.getItem('openai_api_key');
+    if (storedKey) {
+      setCustomApiKey(storedKey);
+      setApiKeyInput('************' + storedKey.slice(-4));
+    }
+  }, []);
+
+  // Salva la chiave API inserita
+  const handleSaveApiKey = () => {
+    if (apiKeyInput.trim().length < 20) {
+      alert('La chiave API sembra troppo corta.');
+      return;
+    }
+    localStorage.setItem('openai_api_key', apiKeyInput.trim());
+    setCustomApiKey(apiKeyInput.trim());
+    setApiKeyInput('************' + apiKeyInput.trim().slice(-4));
+    setShowSettings(false);
+  };
+
+  // Cancella la chiave API personalizzata
+  const handleClearApiKey = () => {
+    localStorage.removeItem('openai_api_key');
+    setCustomApiKey(null);
+    setApiKeyInput('');
+    setShowSettings(false);
+  };
+
   // Effetto per aggiornare il messaggio di sistema quando cambia l'assistente
   useEffect(() => {
     // Aggiorna il messaggio di benvenuto
@@ -82,8 +121,9 @@ const Chat: React.FC = () => {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  // Ottieni la chiave API dalle variabili d'ambiente
+  // Ottieni la chiave API dalle variabili d'ambiente o da localStorage
   const getApiKey = (): string => {
+    if (customApiKey) return customApiKey;
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
     if (!apiKey) {
       console.error('Chiave API OpenAI mancante. Controlla il file .env');
@@ -264,7 +304,6 @@ const Chat: React.FC = () => {
     // Stampa il testo tradotto nella console
     console.log('[handleVoiceText] Testo tradotto:', text);
   };
-
   return (
     <div className="chat-container">
       {/* Intestazione della chat */}
@@ -303,95 +342,121 @@ const Chat: React.FC = () => {
                 ))}
               </select>
             </div>
+            <div className="api-key-section" style={{padding: '15px 15px 0 15px'}}>
+              <label htmlFor="api-key-input" style={{fontSize: '14px', color: '#333'}}>OpenAI API Key:</label>
+              <input
+                id="api-key-input"
+                type="text"
+                placeholder="Inserisci la tua API key..."
+                value={customApiKey ? ('************' + customApiKey.slice(-4)) : apiKeyInput}
+                onChange={e => setApiKeyInput(e.target.value)}
+                style={{width: '100%', marginTop: 4, marginBottom: 8, padding: 6, borderRadius: 6, border: '1px solid #ddd'}}
+                autoComplete="off"
+              />
+              <div style={{display: 'flex', gap: 8}}>
+                <button onClick={handleSaveApiKey} style={{flex: 1, background: '#0084ff', color: 'white', border: 'none', borderRadius: 6, padding: 6, cursor: 'pointer'}}>Salva</button>
+                {customApiKey && (
+                  <button onClick={handleClearApiKey} style={{flex: 1, background: '#eee', color: '#333', border: 'none', borderRadius: 6, padding: 6, cursor: 'pointer'}}>Rimuovi</button>
+                )}
+              </div>
+              <div style={{fontSize: '12px', color: '#888', marginTop: 4}}>
+                La chiave viene salvata solo sul tuo dispositivo.
+              </div>
+            </div>
           </div>
         )}
       </div>
       
-      {/* Form per il prompt personalizzato */}
-      {showCustomPromptForm && (
-        <div className="custom-prompt-form">
-          <h3>Prompt Personalizzato</h3>
-          <p className="prompt-description">
-            Definisci come si comporterà l'assistente.
-          </p>
-          <textarea 
-            value={customPrompt}
-            onChange={(e) => setCustomPrompt(e.target.value)}
-            placeholder="Inserisci il tuo prompt personalizzato..."
-          />
-          <div className="prompt-buttons">
-            <button 
-              onClick={() => setShowCustomPromptForm(false)}
-              className="cancel-button"
-            >
-              Annulla
-            </button>
-            <button 
-              onClick={handleSaveCustomPrompt}
-              className="save-button"
-              disabled={!customPrompt.trim()}
-            >
-              Salva Prompt
-            </button>
+      {/* Contenitore centrale per limitare la larghezza della chat */}
+      <div className="chat-content">
+        {/* Form per il prompt personalizzato */}
+        {showCustomPromptForm && (
+          <div className="custom-prompt-form">
+            <h3>Prompt Personalizzato</h3>
+            <p className="prompt-description">
+              Definisci come si comporterà l'assistente.
+            </p>
+            <textarea 
+              value={customPrompt}
+              onChange={(e) => setCustomPrompt(e.target.value)}
+              placeholder="Inserisci il tuo prompt personalizzato..."
+            />
+            <div className="prompt-buttons">
+              <button 
+                onClick={() => setShowCustomPromptForm(false)}
+                className="cancel-button"
+              >
+                Annulla
+              </button>
+              <button 
+                onClick={handleSaveCustomPrompt}
+                className="save-button"
+                disabled={!customPrompt.trim()}
+              >
+                Salva Prompt
+              </button>
+            </div>
           </div>
+        )}
+          {/* Contenitore dei messaggi */}
+        <div className="messages-container" ref={messagesContainerRef}>
+          {messages.map(message => (
+            <div 
+              key={message.id} 
+              className={`message-bubble ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
+            >
+              <div className="message-content">
+                {message.text}
+              </div>
+              <div className="message-info">
+                <span className="message-sender">{message.sender === 'user' ? 'Tu' : 'Bot'}</span>
+                <span className="message-time">
+                  {formatTime(message.timestamp)}
+                </span>
+              </div>
+            </div>
+          ))}
+          
+          {/* Indicatore "sta scrivendo..." */}
+          {isTyping && (
+            <div className="typing-indicator">
+              <div className="typing-bubble"></div>
+              <div className="typing-bubble"></div>
+              <div className="typing-bubble"></div>
+            </div>
+          )}
+          
+          {/* Messaggio di errore */}
+          {error && (
+            <div className="error-message">
+              <p>Si è verificato un errore: {error}</p>
+            </div>
+          )}
         </div>
-      )}
-      
-      {/* Contenitore dei messaggi */}
-      <div className="messages-container" ref={messagesContainerRef}>
-        {messages.map(message => (
-          <div 
-            key={message.id} 
-            className={`message-bubble ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
-          >
-            <div className="message-content">
-              {message.text}
-            </div>
-            <div className="message-time">
-              {formatTime(message.timestamp)}
-            </div>
-          </div>
-        ))}
-        
-        {/* Indicatore "sta scrivendo..." */}
-        {isTyping && (
-          <div className="typing-indicator">
-            <div className="typing-bubble"></div>
-            <div className="typing-bubble"></div>
-            <div className="typing-bubble"></div>
-          </div>
-        )}
-        
-        {/* Messaggio di errore */}
-        {error && (
-          <div className="error-message">
-            <p>Si è verificato un errore: {error}</p>
-          </div>
-        )}
-      </div>
         {/* Input per scrivere il messaggio */}
-      <div className="input-container">
-        <VoiceControlsEnhanced 
-          onTextReceived={handleVoiceText}
-          isTyping={isTyping}
-          currentMessage={currentBotMessage}
-        />
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Scrivi un messaggio..."
-          className="message-input"
-          disabled={isTyping}
-        />
-        <button
-          onClick={handleSendMessage}
-          className="send-button"
-          disabled={isTyping || inputValue.trim() === ''}
-        >
-          Invia
-        </button>
+        <div className="input-container">
+          <VoiceControlsEnhanced 
+            onTextReceived={handleVoiceText}
+            isTyping={isTyping}
+            currentMessage={currentBotMessage}
+          />
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Scrivi un messaggio..."
+            className="message-input"
+            disabled={isTyping}
+          />
+          <button
+            onClick={handleSendMessage}
+            className="send-button"
+            disabled={isTyping || inputValue.trim() === ''}
+          >
+            Invia
+          </button>
+        </div>
       </div>
     </div>
   );
