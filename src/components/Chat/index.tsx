@@ -56,7 +56,7 @@ const Chat: React.FC = () => {
 
   // Carica la chiave API da localStorage all'avvio
   useEffect(() => {
-    const storedKey = localStorage.getItem('openai_api_key');
+    const storedKey = localStorage.getItem('deespeek_api_key');
     if (storedKey) {
       setCustomApiKey(storedKey);
       setApiKeyInput('************' + storedKey.slice(-4));
@@ -69,7 +69,7 @@ const Chat: React.FC = () => {
       alert('La chiave API sembra troppo corta.');
       return;
     }
-    localStorage.setItem('openai_api_key', apiKeyInput.trim());
+    localStorage.setItem('deespeek_api_key', apiKeyInput.trim());
     setCustomApiKey(apiKeyInput.trim());
     setApiKeyInput('************' + apiKeyInput.trim().slice(-4));
     setShowSettings(false);
@@ -77,7 +77,7 @@ const Chat: React.FC = () => {
 
   // Cancella la chiave API personalizzata
   const handleClearApiKey = () => {
-    localStorage.removeItem('openai_api_key');
+    localStorage.removeItem('deespeek_api_key');
     setCustomApiKey(null);
     setApiKeyInput('');
     setShowSettings(false);
@@ -124,9 +124,9 @@ const Chat: React.FC = () => {
   // Ottieni la chiave API dalle variabili d'ambiente o da localStorage
   const getApiKey = (): string => {
     if (customApiKey) return customApiKey;
-    const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+    const apiKey = import.meta.env.VITE_DEESPEEK_API_KEY;
     if (!apiKey) {
-      console.error('Chiave API OpenAI mancante. Controlla il file .env');
+      console.error('Chiave API deespeek mancante. Controlla il file .env');
       setError('Configurazione API mancante. Contatta l\'amministratore.');
     }
     return apiKey as string;
@@ -221,15 +221,15 @@ const Chat: React.FC = () => {
         throw new Error('Chiave API non disponibile');
       }
 
-      // Effettua la richiesta all'API di OpenAI
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      // Effettua la richiesta all'API di DeepSeek
+      const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
+          model: 'deepseek-chat',
           messages: updatedChatHistory
         })
       });
@@ -237,7 +237,7 @@ const Chat: React.FC = () => {
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(
-          `Errore API OpenAI: ${response.status} - ${errorData.error?.message || response.statusText}`
+          `Errore API DeepSeek: ${response.status} - ${errorData.error?.message || response.statusText}`
         );
       }
 
@@ -254,32 +254,20 @@ const Chat: React.FC = () => {
         sender: 'bot',
         timestamp: new Date(),
       };
-      
       setMessages(prevMessages => [...prevMessages, botResponse]);
-      
-      // Imposta il messaggio corrente del bot per la lettura vocale
       setCurrentBotMessage(botReply);
-      
-      // Aggiorna la cronologia della chat
       setChatHistory(prev => [...prev, { role: 'assistant', content: botReply }]);
     } catch (error) {
-      console.error('Errore durante la comunicazione con OpenAI:', error);
-      
-      // Nascondi l'indicatore di digitazione
+      console.error('Errore durante la comunicazione con DeepSeek:', error);
       setIsTyping(false);
-      
-      // Imposta il messaggio di errore
       const errorMessage = error instanceof Error ? error.message : 'Errore sconosciuto';
       setError(errorMessage);
-      
-      // Aggiungi un messaggio di errore
       const errorResponse: Message = {
         id: Date.now() + 1,
         text: "Mi dispiace, si è verificato un errore di comunicazione. Riprova più tardi.",
         sender: 'bot',
         timestamp: new Date(),
       };
-      
       setMessages(prevMessages => [...prevMessages, errorResponse]);
     }
   };
@@ -343,7 +331,7 @@ const Chat: React.FC = () => {
               </select>
             </div>
             <div className="api-key-section" style={{padding: '15px 15px 0 15px'}}>
-              <label htmlFor="api-key-input" style={{fontSize: '14px', color: '#333'}}>OpenAI API Key:</label>
+              <label htmlFor="api-key-input" style={{fontSize: '14px', color: '#333'}}>Deespeek API Key:</label>
               <input
                 id="api-key-input"
                 type="text"
