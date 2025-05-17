@@ -171,7 +171,6 @@
   font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
 }
 .message-bubble.bot-message code {
-  background: #23272e;
   color: #f8f8f2;
   border-radius: 4px;
   padding: 0.2em 0.4em;
