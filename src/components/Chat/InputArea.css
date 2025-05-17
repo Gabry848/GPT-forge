@@ -1,21 +1,16 @@
 /* Input, pulsanti invio */
 .input-container {
   display: flex;
-  padding: 16px 20px;
+  padding: 10px 12px; /* Ridotto padding per un aspetto più compatto */
   background-color: white;
-  border-top: 1px solid #e4e6eb;
-  z-index: 100;
-  width: 100vw !important;
-  max-width: 100vw !important;
-  min-width: 0 !important;
-  margin: 0 !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  border-top: 1px solid #e0e0e0; /* Bordo leggermente più chiaro */
+  /* Rimossi width, max-width, min-width, margin, padding-left, padding-right specifici per 100vw 
+     perché il layout a tutta larghezza è gestito da .chat-container */
   box-sizing: border-box;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  /* Rimossa la position: fixed e bottom, left, right perché .input-container 
+     sarà posizionato correttamente come ultimo figlio di .chat-content (flex container) */
+  margin-top: auto; /* Spinge l'input-container in fondo se .chat-content è più alto dello schermo */
+  gap: 8px; /* Aggiunto gap tra gli elementi interni */
 }
 
 .message-input {
@@ -61,40 +56,36 @@
 
 .send-button:disabled:hover {
   background-color: #0084ff;
+  transform: none; /* Rimosso transform per stato disabilitato */
+  box-shadow: none; /* Rimosso box-shadow per stato disabilitato */
 }
 
 @media (max-width: 1024px) {
-  .input-container { padding: 10px; }
+  .input-container { 
+    padding: 8px 10px; /* Leggermente ridotto il padding */
+  }
 }
+
 @media (max-width: 768px) {
   .input-container {
-    flex-direction: column;
-    padding: 8px 2px;
-    gap: 6px;
-    width: 100vw !important;
-    max-width: 100vw !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    box-sizing: border-box;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    flex-direction: row; /* Mantenuto row per coerenza, ma potrebbe essere column se preferito */
+    padding: 8px; /* Uniformato padding */
+    gap: 8px; /* Aumentato leggermente il gap per mobile */
+    /* Rimossi width, max-width, min-width, margin, padding-left, padding-right specifici per 100vw */
+    /* Rimossa la position: fixed e bottom, left, right */
   }
   .message-input {
-    font-size: 15px;
-    padding: 10px 12px;
-    border-radius: 18px;
+    font-size: 15px; /* Coerenza con desktop */
+    padding: 10px 14px; /* Leggermente aumentato il padding interno */
+    border-radius: 20px; /* Coerenza con desktop */
     margin-right: 0;
-    margin-bottom: 6px;
+    margin-bottom: 0; /* Rimosso margin-bottom dato che ora c'è gap */
   }
   .send-button {
-    width: 100%;
-    min-width: unset;
-    border-radius: 18px;
-    padding: 10px 0;
-    font-size: 15px;
+    width: auto; /* Permette al bottone di adattarsi al contenuto */
+    min-width: 80px; /* Minima larghezza per il bottone */
+    border-radius: 20px; /* Coerenza con desktop */
+    padding: 10px 16px; /* Adattato padding */
+    font-size: 15px; /* Coerenza con desktop */
   }
 }

@@ -1,3 +1,4 @@
+import ReactMarkdown from 'react-markdown';
 import { useState, useRef, useEffect } from 'react';
 import './ChatContainer.css';
 import './ChatHeader.css';
@@ -21,6 +22,28 @@ interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
   content: string;
 }
+
+// Componente per blocco codice con tasto copia
+const CodeBlockWithCopy = ({ children }: { children: React.ReactNode }) => {
+  const codeRef = useRef<HTMLPreElement>(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (codeRef.current) {
+      const text = codeRef.current.innerText;
+      navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1200);
+    }
+  };
+
+  return (
+    <pre ref={codeRef}>
+      <button className="copy-btn" onClick={handleCopy} title="Copia codice">{copied ? 'Copiato!' : 'Copia'}</button>
+      {children}
+    </pre>
+  );
+};
 
 const Chat: React.FC = () => {
   // Stato per l'assistente attualmente selezionato
@@ -394,7 +417,15 @@ const Chat: React.FC = () => {
               className={`message-bubble ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
             >
               <div className="message-content">
-                {message.text}
+                {message.sender === 'bot' ? (
+                  <ReactMarkdown
+                    components={{
+                      pre: ({children}) => <CodeBlockWithCopy>{children}</CodeBlockWithCopy>,
+                    }}
+                  >{message.text}</ReactMarkdown>
+                ) : (
+                  message.text
+                )}
               </div>
               <div className="message-info">
                 <span className="message-sender">{message.sender === 'user' ? 'Tu' : 'Bot'}</span>
