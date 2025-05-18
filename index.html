@@ -7,9 +7,46 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>GPT Forge</title>
+    <style>
+      #loading-logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #242424; /* o qualsiasi colore di sfondo tu preferisca */
+      }
+      #loading-logo img {
+        width: 128px; /* o la dimensione che preferisci */
+        height: 128px; /* o la dimensione che preferisci */
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="loading-logo">
+      <img src="/favicon.ico" alt="Loading..." />
+    </div>
+    <div id="root" style="display: none;"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Nascondi il logo di caricamento e mostra l'app una volta caricata
+      const rootElement = document.getElementById('root');
+      const loadingLogoElement = document.getElementById('loading-logo');
+
+      // Controlla se l'app è già stata renderizzata (utile per HMR)
+      if (rootElement.hasChildNodes()) {
+        loadingLogoElement.style.display = 'none';
+        rootElement.style.display = 'block';
+      } else {
+        // Usa un MutationObserver per rilevare quando React renderizza l'app
+        const observer = new MutationObserver(() => {
+          if (rootElement.hasChildNodes()) {
+            loadingLogoElement.style.display = 'none';
+            rootElement.style.display = 'block';
+            observer.disconnect(); // Interrompi l'osservazione una volta che l'app è caricata
+          }
+        });
+        observer.observe(rootElement, { childList: true });
+      }
+    </script>
   </body>
 </html>
