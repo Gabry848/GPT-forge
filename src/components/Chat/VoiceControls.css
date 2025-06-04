@@ -7,7 +7,7 @@
 .voice-button {
   background: none;
   border: none;
-  color: #0084ff;
+  color: var(--accent-color);
   width: 44px;
   height: 44px;
   padding: 10px;
@@ -22,39 +22,59 @@
 }
 
 .voice-button:hover {
-  background-color: rgba(0, 132, 255, 0.1);
+  background-color: rgba(123, 104, 238, 0.1);
+}
+
+:root.dark .voice-button:hover {
+  background-color: rgba(123, 104, 238, 0.2);
 }
 
 .voice-button.active {
-  background-color: rgba(0, 132, 255, 0.2);
+  background-color: rgba(123, 104, 238, 0.2);
   animation: pulse 1.5s infinite;
 }
 
+:root.dark .voice-button.active {
+  background-color: rgba(123, 104, 238, 0.3);
+}
+
 .voice-button.listening {
-  color: #ff4f4f;
-  background-color: rgba(255, 79, 79, 0.1);
+  color: #e74c3c;
+  background-color: rgba(231, 76, 60, 0.1);
+}
+
+:root.dark .voice-button.listening {
+  background-color: rgba(231, 76, 60, 0.2);
 }
 
 .voice-button.speaking {
-  color: #34c759;
-  background-color: rgba(52, 199, 89, 0.1);
+  color: #2ecc71;
+  background-color: rgba(46, 204, 113, 0.1);
+}
+
+:root.dark .voice-button.speaking {
+  background-color: rgba(46, 204, 113, 0.2);
 }
 
 /* Aggiunti pulsanti in stile più evidente per facilitare l'uso */
 .voice-button.prominent {
-  background-color: #e4e6eb;
-  border: 1px solid #ced0d4;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 2px var(--shadow-color);
 }
 
 .voice-button.prominent:hover {
-  background-color: #dcdfe5;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  background-color: var(--bg-tertiary);
+  box-shadow: 0 1px 3px var(--shadow-color);
 }
 
 .voice-button.prominent.active {
-  background-color: #d8f1ff;
-  border-color: #0084ff;
+  background-color: rgba(123, 104, 238, 0.1);
+  border-color: var(--accent-color);
+}
+
+:root.dark .voice-button.prominent.active {
+  background-color: rgba(123, 104, 238, 0.2);
 }
 
 @keyframes pulse {

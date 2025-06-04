@@ -4,6 +4,7 @@
   padding: 0;
   height: 100vh;
   width: 100%;
+  background-color: var(--bg-primary);
 }
 
 .App {
@@ -11,6 +12,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .logo {
@@ -22,7 +25,7 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em var(--accent-color));
 }
 
 @keyframes logo-spin {
@@ -42,10 +45,13 @@
 
 .card {
   padding: 2em;
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
 .read-the-docs {
-  color: #888;
+  color: var(--text-muted);
 }
 
 .flex-center {

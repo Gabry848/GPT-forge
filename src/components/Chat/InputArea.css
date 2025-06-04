@@ -2,8 +2,8 @@
 .input-container {
   display: flex;
   padding: 10px 12px; /* Ridotto padding per un aspetto più compatto */
-  background-color: white;
-  border-top: 1px solid #e0e0e0; /* Bordo leggermente più chiaro */
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
   /* Rimossi width, max-width, min-width, margin, padding-left, padding-right specifici per 100vw 
      perché il layout a tutta larghezza è gestito da .chat-container */
   box-sizing: border-box;
@@ -16,22 +16,28 @@
 .message-input {
   flex: 1;
   padding: 14px 18px;
-  border: 1px solid #e4e6eb;
+  border: 1px solid var(--border-color);
   border-radius: 24px;
   margin-right: 12px;
   font-size: 15px;
   outline: none;
   transition: all 0.2s;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 3px var(--shadow-color);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .message-input:focus {
-  border-color: #0084ff;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 0 0 2px rgba(0, 132, 255, 0.2);
+  border-color: var(--accent-color);
+  box-shadow: inset 0 1px 3px var(--shadow-color), 0 0 0 2px rgba(123, 104, 238, 0.2);
+}
+
+:root.dark .message-input:focus {
+  box-shadow: inset 0 1px 3px var(--shadow-color), 0 0 0 2px rgba(123, 104, 238, 0.4);
 }
 
 .send-button {
-  background-color: #0084ff;
+  background-color: var(--accent-color);
   color: white;
   padding: 10px 20px;
   border: none;
@@ -44,9 +50,9 @@
 }
 
 .send-button:hover {
-  background-color: #0077e6;
+  background-color: var(--accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 5px var(--shadow-color);
 }
 
 .send-button:disabled, .message-input:disabled {

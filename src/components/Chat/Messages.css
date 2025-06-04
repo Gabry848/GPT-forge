@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background-color: #f8f9fb;
+  background-color: var(--bg-primary);
   min-height: 0;
   align-items: stretch;
   max-width: 500px;
@@ -33,23 +33,24 @@
 
 .user-message {
   align-self: flex-end;
-  background-color: #0084ff;
+  background-color: var(--accent-color);
   color: white;
   border-bottom-right-radius: 4px;
   margin-left: auto;
   margin-right: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-color);
   text-align: right;
 }
 
 .bot-message {
   align-self: flex-start;
-  background-color: #e4e6eb;
-  color: #050505;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
   border-bottom-left-radius: 4px;
   margin-right: auto;
   margin-left: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-color);
   text-align: left;
 }
 
@@ -85,8 +86,14 @@
   background: transparent;
 }
 .messages-container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: var(--text-muted);
   border-radius: 3px;
+  opacity: 0.3;
+}
+
+/* Dark theme scrollbar */
+:root.dark .messages-container::-webkit-scrollbar-thumb {
+  background-color: rgba(157, 156, 171, 0.4);
 }
 
 /* Responsive */
@@ -109,17 +116,18 @@
   display: flex;
   align-items: center;
   align-self: flex-start;
-  background-color: #e4e6eb;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   padding: 14px 18px;
   border-radius: 18px;
   border-bottom-left-radius: 4px;
   margin-top: 8px;
   width: fit-content;
   max-width: 70%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px var(--shadow-color);
 }
 .typing-bubble {
-  background-color: #777;
+  background-color: var(--text-muted);
   border-radius: 50%;
   height: 9px;
   width: 9px;
@@ -138,7 +146,7 @@
 /* Messaggio di errore */
 .error-message {
   align-self: center;
-  background-color: #ff4d4f;
+  background-color: #e74c3c;
   color: white;
   padding: 10px 16px;
   border-radius: 8px;
@@ -146,7 +154,7 @@
   font-size: 14px;
   max-width: 80%;
   text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 6px var(--shadow-color);
 }
 
 /* Evidenziazione per blocchi di codice e codice inline nei messaggi bot */

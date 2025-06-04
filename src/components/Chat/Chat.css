@@ -5,7 +5,8 @@
   width: 100%; /* Occupa tutta la larghezza disponibile */
   max-width: none; /* Rimuovi la larghezza massima */
   margin: 0; /* Rimuovi i margini */
-  background-color: #f5f7fb;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   overflow: hidden;
   box-shadow: none; /* Rimuovi l'ombra */
   position: relative;
@@ -25,10 +26,10 @@
 
 .chat-header {
   padding: 20px;
-  background-color: #0084ff;
+  background-color: var(--accent-color);
   color: white;
   text-align: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--border-color);
   z-index: 10; /* Assicura che l'intestazione rimanga sopra */
   display: flex;
   justify-content: space-between;
@@ -70,9 +71,10 @@
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: white;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px var(--shadow-color);
   width: 200px;
   z-index: 20;
   overflow: hidden;
@@ -88,12 +90,12 @@
   text-align: left;
   cursor: pointer;
   font-size: 15px;
-  color: #333;
+  color: var(--text-primary);
   transition: background-color 0.2s;
 }
 
 .clear-chat-button:hover {
-  background-color: #f0f2f5;
+  background-color: var(--bg-tertiary);
 }
 
 @keyframes slide-down {

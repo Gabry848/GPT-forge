@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Chat from './index';
 import MicrophoneTest from './MicrophoneTest';
+import ThemeToggle from './ThemeToggle';
 import './VoiceChatNavigation.css';
 
 const VoiceChatNavigation: React.FC = () => {
@@ -21,6 +22,7 @@ const VoiceChatNavigation: React.FC = () => {
         >
           Test Microfono
         </button>
+        <ThemeToggle />
       </div>
 
       <div className="voice-chat-content">

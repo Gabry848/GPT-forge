@@ -6,7 +6,6 @@ import './ChatHeader.css';
 import './Messages.css';
 import './InputArea.css';
 import './SettingsMenu.css';
-import './AssistantSelector.css';
 import './CustomPromptForm.css';
 import './ApiKeySection.css';
 import './SettingsPopup.css';
@@ -17,7 +16,6 @@ import VoiceControlsEnhanced from './VoiceControlsEnhanced';
 import ChatHeader from './components/ChatHeader';
 import SettingsModal from './components/SettingsModal';
 import CreateModelModal from './components/CreateModelModal';
-import AssistantSelector from './components/AssistantSelector';
 import CustomPromptForm from './components/CustomPromptForm';
 import MessagesContainer from './components/MessagesContainer';
 import InputArea from './components/InputArea';
@@ -585,11 +583,11 @@ const Chat: React.FC = () => {
         
       {/* Contenitore centrale per limitare la larghezza della chat */}
       <div className="chat-content">
-        {/* Selettore assistente */}
-        <AssistantSelector
+        {/* Selettore assistente RIMOSSO */}
+        {/* <AssistantSelector
           currentAssistant={currentAssistant}
           onAssistantChange={handleChangeAssistant}
-        />
+        /> */}
 
         {/* Form per il prompt personalizzato - Solo quando il popup delle impostazioni è chiuso */}
         {showCustomPromptForm && !showSettingsPopup && (
