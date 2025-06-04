@@ -1,6 +1,5 @@
 // filepath: e:\Projects\GPT Forge\src\components\Chat\index.tsx
-import ReactMarkdown from 'react-markdown';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './ChatContainer.css';
 import './ChatHeader.css';
 import './Messages.css';
@@ -10,18 +9,17 @@ import './AssistantSelector.css';
 import './CustomPromptForm.css';
 import './ApiKeySection.css';
 import './SettingsPopup.css';
-import { AssistantConfig, assistants, defaultAssistant, findAssistantById } from '../../config/prompts';
-import VoiceControlsEnhanced from './VoiceControlsEnhanced';
+import { AssistantConfig, defaultAssistant, findAssistantById } from '../../config/prompts';
 
-// Import componenti modulari
+// Import dei componenti modulari
 import ChatHeader from './components/ChatHeader';
 import SettingsModal from './components/SettingsModal';
+import { SettingsTab } from './components/SettingsSidebar';
 import CreateModelModal from './components/CreateModelModal';
-import AssistantSelector from './components/AssistantSelector';
-import CustomPromptForm from './components/CustomPromptForm';
 import MessagesContainer from './components/MessagesContainer';
 import InputArea from './components/InputArea';
-import { SettingsTab } from './components/SettingsSidebar';
+import CustomPromptForm from './components/CustomPromptForm';
+import AssistantSelector from './components/AssistantSelector';
 
 interface Message {
   id: number;
@@ -528,8 +526,12 @@ const Chat: React.FC = () => {
       setIsTyping(false);
     }
   };
-    return (
-    <>
+  
+  return (
+    <div className="chat-container">
+      {/* Intestazione della chat */}
+      <ChatHeader onSettingsClick={() => setShowSettingsPopup(true)} />
+      
       {/* Modal delle impostazioni con sidebar */}
       <SettingsModal
         isOpen={showSettingsPopup}
@@ -578,10 +580,6 @@ const Chat: React.FC = () => {
         onClose={closeCreateModelModal}
         onTest={testNewModel}
       />
-
-      <div className="chat-container">
-        {/* Intestazione della chat */}
-        <ChatHeader onSettingsClick={() => setShowSettingsPopup(true)} />
         
       {/* Contenitore centrale per limitare la larghezza della chat */}
       <div className="chat-content">
@@ -616,10 +614,10 @@ const Chat: React.FC = () => {
           onInputChange={setInputValue}
           onSendMessage={handleSendMessage}
           onKeyDown={handleKeyDown}
-          onVoiceText={handleVoiceText}        />
+          onVoiceText={handleVoiceText}
+        />
       </div>
     </div>
-    </>
   );
 };
 
