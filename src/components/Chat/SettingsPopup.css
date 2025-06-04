@@ -13,8 +13,13 @@
   backdrop-filter: blur(3px);
 }
 
+/* Dark theme overlay */
+:root.dark .settings-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
 .settings-popup {
-  background: #ffffff;
+  background: var(--bg-primary);
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
@@ -24,8 +29,13 @@
   overflow-y: auto;
   position: relative;
   animation: popup-enter 0.2s ease-out;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border-color);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Dark theme popup */
+:root.dark .settings-popup {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 @keyframes popup-enter {
@@ -45,13 +55,13 @@
   align-items: center;
   margin-bottom: 24px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .settings-popup-title {
   font-size: 20px;
   font-weight: 600;
-  color: #212529;
+  color: var(--text-primary);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -61,15 +71,15 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #666;
+  color: var(--text-muted);
   padding: 4px;
   border-radius: 6px;
   transition: background-color 0.2s;
 }
 
 .settings-close-btn:hover {
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .settings-section {
@@ -83,7 +93,7 @@
 .settings-section-title {
   font-size: 16px;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 12px;
   display: flex;
   align-items: center;
@@ -108,34 +118,39 @@
   display: block;
   font-size: 14px;
   font-weight: 500;
-  color: #555;
+  color: var(--text-secondary);
   margin-bottom: 6px;
 }
 
 .settings-input {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   font-size: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: #333;
-  background-color: white;
+  font-family: inherit;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .settings-input:focus {
   outline: none;
-  border-color: #0084ff;
-  box-shadow: 0 0 0 3px rgba(0, 132, 255, 0.1);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.1);
+}
+
+/* Dark theme focus */
+:root.dark .settings-input:focus {
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.2);
 }
 
 .settings-input:hover {
-  border-color: #bbb;
+  border-color: var(--text-muted);
 }
 
 .settings-input::placeholder {
-  color: #999;
+  color: var(--text-muted);
   opacity: 1;
 }
 
@@ -176,10 +191,21 @@
   line-height: 1.4;
 }
 
-.settings-button-group {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
+.settings-button {
+  padding: 10px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.settings-button:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--accent-color);
 }
 
 .settings-button {
@@ -820,40 +846,346 @@
   color: #fff;
 }
 
+/* =================
+   DARK THEME STYLES
+   ================= */
+
+/* Sidebar dark theme */
+:root.dark .settings-sidebar {
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+}
+
+:root.dark .settings-main {
+  background-color: var(--bg-primary);
+}
+
+/* Tab styles dark theme */
+:root.dark .settings-tab {
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+:root.dark .settings-tab:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--accent-color);
+}
+
+:root.dark .settings-tab.active {
+  background-color: var(--accent-color);
+  color: #ffffff;
+}
+
+/* Input and select dark theme */
+:root.dark .settings-input,
+:root.dark .settings-select {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+:root.dark .settings-input:hover,
+:root.dark .settings-select:hover {
+  border-color: var(--text-muted);
+}
+
+:root.dark .settings-input::placeholder {
+  color: var(--text-muted);
+}
+
+:root.dark .settings-select option {
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+}
+
+/* Button dark theme */
+:root.dark .settings-button {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+:root.dark .settings-button:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--accent-color);
+}
+
+:root.dark .settings-button-primary {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+}
+
+:root.dark .settings-button-primary:hover {
+  background-color: var(--accent-hover);
+}
+
+:root.dark .settings-button-secondary {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+:root.dark .settings-button-secondary:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--accent-color);
+}
+
+:root.dark .settings-button-danger {
+  background-color: #dc3545;
+  color: #ffffff;
+  border-color: #dc3545;
+}
+
+:root.dark .settings-button-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+/* Action buttons dark theme */
+:root.dark .settings-action-button {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+:root.dark .settings-action-button:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--accent-color);
+}
+
+:root.dark .clear-chat-button {
+  background-color: #dc3545;
+  color: white;
+  border: 1px solid #dc3545;
+}
+
+:root.dark .clear-chat-button:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+/* Model list dark theme */
+:root.dark .model-option {
+  border-bottom: 1px solid var(--border-color);
+}
+
+:root.dark .model-name {
+  color: var(--text-primary);
+}
+
+:root.dark .model-description {
+  color: var(--text-secondary);
+}
+
+:root.dark .model-pricing {
+  color: var(--text-muted);
+}
+
+/* Models loading and error dark theme */
+:root.dark .models-loading {
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+:root.dark .models-error {
+  color: #ff6b6b;
+  background-color: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+/* Custom prompt form dark theme */
+:root.dark .settings-custom-prompt-form {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+:root.dark .settings-custom-prompt-form h4 {
+  color: var(--text-primary);
+}
+
+:root.dark .settings-custom-prompt-form .prompt-description {
+  color: var(--text-secondary);
+}
+
+:root.dark .settings-custom-prompt-form textarea {
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  border-color: var(--border-color);
+}
+
+:root.dark .settings-custom-prompt-form textarea:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.2);
+}
+
+/* Textarea dark theme */
+:root.dark .settings-textarea {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+:root.dark .settings-textarea:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.2);
+}
+
+/* Current model info dark theme */
+:root.dark .current-model-info {
+  background-color: rgba(123, 104, 238, 0.1);
+  border: 1px solid rgba(123, 104, 238, 0.3);
+}
+
+:root.dark .current-model-info strong {
+  color: var(--accent-color);
+}
+
+:root.dark .current-model-info small {
+  color: var(--text-secondary);
+}
+
+/* Saved models dark theme */
+:root.dark .saved-model-item {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+:root.dark .saved-model-item:hover {
+  background-color: var(--bg-tertiary);
+}
+
+:root.dark .saved-model-title {
+  color: var(--text-primary);
+}
+
+:root.dark .saved-model-model,
+:root.dark .saved-model-date {
+  color: var(--text-secondary);
+}
+
+:root.dark .saved-model-prompt {
+  color: var(--text-secondary);
+}
+
+:root.dark .no-models-message {
+  color: var(--text-muted);
+}
+
+/* Model action buttons dark theme */
+:root.dark .model-action-button {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+:root.dark .model-action-button:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--accent-color);
+}
+
+:root.dark .load-button:hover {
+  background-color: rgba(123, 104, 238, 0.1);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+:root.dark .delete-button:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+/* Create model modal dark theme */
+:root.dark .create-model-modal {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  border: 1.5px solid var(--border-color);
+}
+
+:root.dark .create-model-modal-title {
+  color: var(--text-primary);
+}
+
+:root.dark .create-model-modal-close {
+  color: var(--text-muted);
+}
+
+:root.dark .create-model-modal-close:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+:root.dark .create-model-label {
+  color: var(--text-primary);
+}
+
+:root.dark .create-model-input,
+:root.dark .create-model-textarea {
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+:root.dark .create-model-input:focus,
+:root.dark .create-model-textarea:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.2);
+}
+
+:root.dark .create-model-input::placeholder,
+:root.dark .create-model-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+:root.dark .create-model-info {
+  background: rgba(123, 104, 238, 0.1);
+  border-radius: 7px;
+}
+
+:root.dark .create-model-help-text {
+  color: var(--text-secondary);
+}
+
+/* Create model buttons dark theme */
+:root.dark .create-model-button-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-color);
+}
+
+:root.dark .create-model-button-secondary:hover {
+  background: var(--bg-secondary);
+  color: var(--accent-color);
+}
+
+:root.dark .create-model-button-primary {
+  background: var(--accent-color);
+  color: #fff;
+  border: 1.5px solid var(--accent-color);
+}
+
+:root.dark .create-model-button-primary:hover {
+  background: var(--accent-hover);
+}
+
+/* Settings help text dark theme */
+:root.dark .settings-help-text {
+  color: var(--text-secondary);
+}
+
+/* API key section dark theme */
+:root.dark .api-key-status {
+  color: var(--text-secondary);
+}
+
+/* Mobile responsiveness dark theme */
 @media (max-width: 768px) {
-  .settings-content {
-    flex-direction: column;
-    height: auto;
-    max-height: 90vh;
+  :root.dark .settings-sidebar {
+    border-bottom: 1px solid var(--border-color);
   }
   
-  .settings-sidebar {
-    width: 100%;
-    display: flex;
-    overflow-x: auto;
-    border-right: none;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  .settings-tab {
-    white-space: nowrap;
-    min-width: 150px;
-    border-bottom: none;
-    border-right: 1px solid #e0e0e0;
-  }
-  
-  .settings-main {
-    padding: 20px;
-  }
-  
-  .create-model-modal {
-    margin: 10px;
-    max-width: none;
-  }
-  
-  .create-model-modal-header,
-  .create-model-modal-body,
-  .create-model-modal-footer {
-    padding: 20px;
+  :root.dark .settings-tab {
+    border-right: 1px solid var(--border-color);
   }
 }

@@ -45,6 +45,21 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
     });
   };
 
+  const handleCopyMessage = () => {
+    navigator.clipboard.writeText(message.text);
+  };
+
+  const handleRegenerateResponse = () => {
+    // Logica per rigenerare la risposta (da implementare)
+    console.log('Rigenerando risposta...');
+  };
+
+  const handleShareMessage = () => {
+    // Logica per condividere il messaggio (da implementare)
+    navigator.clipboard.writeText(message.text);
+    console.log('Messaggio copiato per condivisione');
+  };
+
   return (
     <div className={`message-bubble ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}>
       <div className="message-content">
@@ -66,6 +81,50 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
           {formatTime(message.timestamp)}
         </span>
       </div>
+
+      {/* Elementi aggiuntivi per i messaggi del bot */}
+      {message.sender === 'bot' && (
+        <>
+          {/* Area informativa sul lato destro */}
+          <div className="message-right-info">
+            {formatTime(message.timestamp)}
+          </div>
+
+          {/* Indicatore AI */}
+          <div className="ai-indicator"></div>
+
+          {/* Bordo animato */}
+          <div className="right-border-animation"></div>
+
+          {/* Pulsanti di azione */}
+          <div className="right-actions">
+            <button 
+              className="right-action-btn" 
+              onClick={handleCopyMessage}
+              data-tooltip="Copia"
+              aria-label="Copia messaggio"
+            >
+              📋
+            </button>
+            <button 
+              className="right-action-btn" 
+              onClick={handleRegenerateResponse}
+              data-tooltip="Rigenera"
+              aria-label="Rigenera risposta"
+            >
+              🔄
+            </button>
+            <button 
+              className="right-action-btn" 
+              onClick={handleShareMessage}
+              data-tooltip="Condividi"
+              aria-label="Condividi messaggio"
+            >
+              📤
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
