@@ -29,9 +29,9 @@ const CreateModelModal: React.FC<CreateModelModalProps> = ({
   return (
     <div className="create-model-modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="create-model-modal">
-        <div className="create-model-modal-header">
-          <h2 className="create-model-modal-title">Crea Nuovo Modello Personalizzato</h2>
-          <button className="create-model-modal-close" onClick={onClose}>
+        <div className="create-model-modal-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative' }}>
+          <h2 className="create-model-modal-title" style={{ flex: 1, textAlign: 'left' }}>Crea Nuovo Modello Personalizzato</h2>
+          <button className="create-model-modal-close" onClick={onClose} style={{ position: 'absolute', right: 0, top: 0, margin: '12px 12px 0 0' }}>
             ×
           </button>
         </div>

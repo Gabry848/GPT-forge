@@ -19,7 +19,7 @@
   padding: 24px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   width: 90%;
-  max-width: 500px;
+  max-width: 1000px;
   max-height: 80vh;
   overflow-y: auto;
   position: relative;
@@ -627,6 +627,9 @@
   border-bottom: 1px solid #e0e0e0;
   font-size: 14px;
   color: #333;
+  margin-bottom: 12px;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 
 .settings-tab:hover {
@@ -665,63 +668,158 @@
 }
 
 .create-model-modal {
-  background: white;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #f8fafc 0%, #e3f0ff 100%);
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  padding: 0;
+  border: 1.5px solid #e0e7ef;
+  transition: box-shadow 0.2s;
+  max-width: 900px;
+  min-width: 400px !important;
 }
 
 .create-model-modal-header {
-  padding: 25px 30px 20px;
-  border-bottom: 1px solid #e0e0e0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 28px 36px 18px;
+  border-bottom: 1.5px solid #e0e0e0;
+  background: transparent;
 }
 
 .create-model-modal-title {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a237e;
+  letter-spacing: 0.5px;
 }
 
 .create-model-modal-close {
   background: none;
   border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #666;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 28px;
+  color: #888;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  transition: all 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
 .create-model-modal-close:hover {
-  background-color: #f0f0f0;
-  color: #333;
+  background: #e3eafc;
+  color: #1a237e;
 }
 
 .create-model-modal-body {
-  padding: 30px;
+  padding: 32px 36px 18px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.create-model-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.create-model-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #283593;
+  margin-bottom: 2px;
+}
+
+.create-model-input,
+.create-model-textarea {
+  border: 1.5px solid #b6c6e3;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  background: #fff;
+  color: #1a237e;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.create-model-input:focus,
+.create-model-textarea:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 2px #90caf9;
+}
+
+.create-model-input::placeholder,
+.create-model-textarea::placeholder {
+  color: #90a4ae;
+  opacity: 1;
+}
+
+.create-model-info {
+  background: #f1f8ff;
+  border-radius: 7px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #1976d2;
+  margin-top: 8px;
+}
+
+.create-model-help-text {
+  color: #607d8b;
+  font-size: 13px;
+  margin-top: 4px;
 }
 
 .create-model-modal-footer {
-  padding: 20px 30px;
-  border-top: 1px solid #e0e0e0;
+  padding: 22px 36px 28px 36px;
+  border-top: 1.5px solid #e0e0e0;
+  background: transparent;
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: flex-end;
 }
 
-/* Adattamenti responsive per sidebar */
+.create-model-button {
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.07);
+}
+
+.create-model-button-secondary {
+  background: #f5f7fa;
+  color: #283593;
+  border: 1.5px solid #b6c6e3;
+}
+
+.create-model-button-secondary:hover {
+  background: #e3eafc;
+  color: #1976d2;
+}
+
+.create-model-button-primary {
+  background: #1976d2;
+  color: #fff;
+  border: 1.5px solid #1976d2;
+}
+
+.create-model-button-primary:hover {
+  background: #1565c0;
+  color: #fff;
+}
+
+.create-model-button-success {
+  background: #43a047;
+  color: #fff;
+  border: 1.5px solid #43a047;
+}
+
+.create-model-button-success:hover {
+  background: #388e3c;
+  color: #fff;
+}
+
 @media (max-width: 768px) {
   .settings-content {
     flex-direction: column;
