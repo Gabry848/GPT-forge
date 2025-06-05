@@ -20,7 +20,7 @@
 }
 
 .message-bubble {
-  max-width: 65%;
+  max-width: 40%;
   padding: 14px 18px;
   border-radius: 18px;
   position: relative;
@@ -287,11 +287,11 @@
 
 /* Responsive */
 @media (max-width: 1024px) {
-  .user-message, .bot-message { max-width: 75%; }
+  .user-message, .bot-message { max-width: 50%; }
   .messages-container { padding: 15px 15px 0 15px; }
 }
 @media (max-width: 768px) {
-  .user-message, .bot-message { max-width: 85%; }
+  .user-message, .bot-message { max-width: 60%; }
   .messages-container { padding: 15px 10px 0 10px; }
   
   /* Nascondere tutti gli elementi decorativi del lato destro su mobile */
@@ -315,7 +315,7 @@
   }
 }
 @media (max-width: 768px) {
-  .message-bubble { max-width: 85%; }
+  .message-bubble { max-width: 60%; }
 }
 
 /* Indicatori di digitazione */

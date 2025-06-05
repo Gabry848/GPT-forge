@@ -1,29 +1,166 @@
-/* Sezione API key */
+/* Sezione API key - Layout migliorato */
+.api-key-section {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  margin-bottom: 24px;
+}
+
 .api-key-section label {
   display: block;
-  margin-bottom: 4px;
-  font-size: 14px;
-  color: #333;
-}
-.api-key-section input[type="text"] {
-  width: 100%;
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  font-size: 14px;
   margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
 }
+
+.api-key-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.api-key-section input[type="text"],
+.api-key-section input[type="password"] {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.api-key-section input[type="text"]:focus,
+.api-key-section input[type="password"]:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.1);
+}
+
+.api-key-section input[type="text"]:hover,
+.api-key-section input[type="password"]:hover {
+  border-color: var(--text-muted);
+}
+
+.api-key-section input::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
 .api-key-section button {
   font-size: 14px;
-  padding: 6px 0;
-  border-radius: 6px;
-  border: none;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid transparent;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
-.api-key-section button:hover { opacity: 0.9; }
-.api-key-section .api-key-info {
+
+/* Bottone rimuovi più piccolo */
+.api-key-status button {
   font-size: 12px;
-  color: #888;
-  margin-top: 4px;
+  padding: 6px 8px;
+  min-height: 32px;
+  border-radius: 6px;
+  min-width: 60px; /* Ridotta la larghezza minima */
+  max-width: 80px; /* Limitata la larghezza massima */
+}
+
+.api-key-section button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.api-key-section button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.api-key-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: rgba(40, 167, 69, 0.1);
+  border: 1px solid rgba(40, 167, 69, 0.2);
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.api-key-saved {
+  color: #28a745;
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.api-key-section .api-key-info,
+.api-key-section .settings-help-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-top: 12px;
+  padding: 12px 16px;
+  background-color: var(--bg-tertiary);
+  border-radius: 6px;
+  border-left: 3px solid var(--accent-color);
+}
+
+.api-key-section .settings-help-text a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.api-key-section .settings-help-text a:hover {
+  text-decoration: underline;
+  color: var(--accent-hover);
+}
+
+/* Responsive per dispositivi mobili */
+@media (max-width: 768px) {
+  .api-key-section {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .api-key-container {
+    gap: 10px;
+  }
+  
+  .api-key-section input[type="text"],
+  .api-key-section input[type="password"] {
+    padding: 10px 12px;
+  }
+  
+  .api-key-section button {
+    padding: 8px 16px;
+    min-height: 36px;
+  }
+  
+  .api-key-status {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+/* Dark theme enhancements */
+:root.dark .api-key-status {
+  background-color: rgba(40, 167, 69, 0.15);
+  border-color: rgba(40, 167, 69, 0.3);
 }

@@ -127,7 +127,7 @@
 }
 
 .message-bubble {
-  max-width: 65%; /* Larghezza massima ridotta per un aspetto migliore su desktop */
+  max-width: 40%; /* Larghezza massima impostata a 2/5 della larghezza della pagina */
   padding: 14px 18px;
   border-radius: 18px;
   position: relative;
@@ -161,7 +161,7 @@
 
 .user-message,
 .bot-message {
-  max-width: 70%; /* Larghezza massima ridotta rispetto a prima */
+  max-width: 40%; /* Larghezza massima impostata a 2/5 della larghezza della pagina */
   width: fit-content; /* Adatta la larghezza al contenuto */
 }
 
@@ -177,7 +177,7 @@
 @media (max-width: 1024px) {
   .user-message,
   .bot-message {
-    max-width: 75%;
+    max-width: 50%;
   }
   
   .messages-container {
@@ -188,7 +188,7 @@
 @media (max-width: 768px) {
   .user-message,
   .bot-message {
-    max-width: 85%;
+    max-width: 60%;
   }
   
   .messages-container {
@@ -293,7 +293,7 @@
 /* Stile per dispositivi mobili */
 @media (max-width: 768px) {
   .message-bubble {
-    max-width: 85%;
+    max-width: 60%;
   }
 }
 
@@ -702,7 +702,7 @@
   margin-right: auto !important;
   align-self: flex-start !important;
   width: fit-content !important;
-  max-width: 70% !important;
+  max-width: 40% !important;
 }
 
 .message-bubble.user-message {
@@ -710,7 +710,7 @@
   margin-right: 10px !important;
   align-self: flex-end !important;
   width: fit-content !important;
-  max-width: 70% !important;
+  max-width: 40% !important;
 }
 
 .message-bubble.bot-message {
