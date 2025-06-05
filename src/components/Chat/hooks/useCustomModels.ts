@@ -53,12 +53,12 @@ export const useCustomModels = () => {
       alert('Inserisci un titolo per il modello personalizzato');
       return false;
     }
-    
+
     if (!newModelPrompt.trim()) {
       alert('Inserisci un prompt personalizzato');
       return false;
     }
-    
+
     const newModel: SavedCustomModel = {
       id: Date.now().toString(),
       title: newModelTitle.trim(),
@@ -66,13 +66,12 @@ export const useCustomModels = () => {
       modelId: selectedModel,
       createdAt: new Date()
     };
-    
+
     const updatedModels = [...savedCustomModels, newModel];
     setSavedCustomModels(updatedModels);
     localStorage.setItem('saved_custom_models', JSON.stringify(updatedModels));
-    
+
     closeCreateModelModal();
-    alert('Modello personalizzato salvato con successo!');
     return true;
   };
   const deleteCustomModel = (modelId: string) => {

@@ -282,24 +282,38 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
     chat.updateAssistant(customAssistant);
     chat.setCustomPrompt(model.prompt);
     models.handleModelChange(model.modelId);
-    
+
     chat.setMessages([{
-      id: 1,
+      id: Date.now(),
       text: `Ciao! Sono il tuo assistente personalizzato "${model.title}". Come posso aiutarti oggi?`,
       sender: 'bot',
       timestamp: new Date(),
     }]);
-    
+
     chat.setChatHistory([{ role: 'system', content: model.prompt }]);
     customModels.setShowSavedModels(false);
     chat.setError(null);
-    
-    alert(`Modello "${model.title}" caricato con successo!`);
+
+    // Forza il focus sull'input field
+    setTimeout(() => {
+      if (chat.inputRef.current) {
+        chat.inputRef.current.focus();
+      }
+    }, 0);
   };
 
   const saveNewModelFromModal = () => {
-    const success = customModels.saveNewModel(models.selectedModel);
-    return success;
+    const success = customModels.saveNewModel(models.selectedModel); // Questa funzione interna chiama alert e closeCreateModelModal
+    if (success) {
+      // Se il salvataggio ha avuto successo (e l'alert è stato mostrato/chiuso), forza il focus
+      setTimeout(() => {
+        if (chat.inputRef.current) {
+          chat.inputRef.current.focus();
+        }
+      }, 0);
+    }
+    // La funzione saveNewModel nell'hook useCustomModels restituisce un booleano
+    // Non è necessario restituire esplicitamente qui se non usato altrove.
   };
 
   const testNewModel = async () => {
