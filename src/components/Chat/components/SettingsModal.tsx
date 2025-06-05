@@ -4,6 +4,7 @@ import AssistantSettings from './AssistantSettings';
 import ModelSettings from './ModelSettings';
 import CustomModelsSettings from './CustomModelsSettings';
 import ApiSettings from './ApiSettings';
+import ChatHistorySettings from './ChatHistorySettings';
 import ActionsSettings from './ActionsSettings';
 import { AssistantConfig } from '../../../config/prompts';
 
@@ -40,6 +41,9 @@ interface SettingsModalProps {
   showSavedModels: boolean;
   apiKeyInput: string;
   customApiKey: string | null;
+  chatSavePath: string;
+  autoSaveChats: boolean;
+  maxHistoryFiles: number;
   onClose: () => void;
   onTabChange: (tab: SettingsTab) => void;
   onAssistantChange: (assistantId: string) => void;
@@ -55,6 +59,12 @@ interface SettingsModalProps {
   onApiKeyChange: (key: string) => void;
   onSaveApiKey: () => void;
   onRemoveApiKey: () => void;
+  onChatSavePathChange: (path: string) => void;
+  onAutoSaveChatsChange: (enabled: boolean) => void;
+  onMaxHistoryFilesChange: (max: number) => void;
+  onSelectChatSaveFolder: () => void;
+  onClearChatHistory: () => void;
+  onExportAllChats: () => void;
   onClearChat: () => void;
   onExportChat: () => void;
   onResetSettings: () => void;
@@ -74,6 +84,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   showSavedModels,
   apiKeyInput,
   customApiKey,
+  chatSavePath,
+  autoSaveChats,
+  maxHistoryFiles,
   onClose,
   onTabChange,
   onAssistantChange,
@@ -89,6 +102,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   onApiKeyChange,
   onSaveApiKey,
   onRemoveApiKey,
+  onChatSavePathChange,
+  onAutoSaveChatsChange,
+  onMaxHistoryFilesChange,
+  onSelectChatSaveFolder,
+  onClearChatHistory,
+  onExportAllChats,
   onClearChat,
   onExportChat,
   onResetSettings
@@ -141,15 +160,27 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 onLoadModel={onLoadModel}
                 onDeleteModel={onDeleteModel}
               />
-            )}
-
-            {activeTab === 'api' && (
+            )}            {activeTab === 'api' && (
               <ApiSettings
                 apiKeyInput={apiKeyInput}
                 customApiKey={customApiKey}
                 onApiKeyChange={onApiKeyChange}
                 onSaveApiKey={onSaveApiKey}
                 onRemoveApiKey={onRemoveApiKey}
+              />
+            )}
+
+            {activeTab === 'history' && (
+              <ChatHistorySettings
+                savePath={chatSavePath}
+                autoSave={autoSaveChats}
+                maxHistoryFiles={maxHistoryFiles}
+                onSavePathChange={onChatSavePathChange}
+                onAutoSaveChange={onAutoSaveChatsChange}
+                onMaxHistoryFilesChange={onMaxHistoryFilesChange}
+                onSelectFolder={onSelectChatSaveFolder}
+                onClearHistory={onClearChatHistory}
+                onExportAllChats={onExportAllChats}
               />
             )}
 

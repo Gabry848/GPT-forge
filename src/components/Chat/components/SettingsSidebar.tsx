@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type SettingsTab = 'assistant' | 'model' | 'custom-models' | 'api' | 'actions';
+export type SettingsTab = 'assistant' | 'model' | 'custom-models' | 'api' | 'history' | 'actions';
 
 interface SettingsSidebarProps {
   activeTab: SettingsTab;
@@ -13,6 +13,7 @@ const SettingsSidebar: React.FC<SettingsSidebarProps> = ({ activeTab, onTabChang
     { id: 'model' as const, icon: '🧠', title: 'Modello AI' },
     { id: 'custom-models' as const, icon: '⚡', title: 'Modelli Personalizzati' },
     { id: 'api' as const, icon: '🔑', title: 'API' },
+    { id: 'history' as const, icon: '💾', title: 'Cronologia' },
     { id: 'actions' as const, icon: '⚙️', title: 'Azioni' },
   ];
 

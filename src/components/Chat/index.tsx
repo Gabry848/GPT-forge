@@ -9,6 +9,7 @@ import './SettingsMenu.css';
 import './CustomPromptForm.css';
 import './ApiKeySection.css';
 import './SettingsPopup.css';
+import './ChatSidebar.css';
 import { AssistantConfig, assistants, defaultAssistant, findAssistantById } from '../../config/prompts';
 import VoiceControlsEnhanced from './VoiceControlsEnhanced';
 
@@ -19,6 +20,7 @@ import CreateModelModal from './components/CreateModelModal';
 import CustomPromptForm from './components/CustomPromptForm';
 import MessagesContainer from './components/MessagesContainer';
 import InputArea from './components/InputArea';
+import ChatSidebar from './components/ChatSidebar';
 import { SettingsTab } from './components/SettingsSidebar';
 
 interface Message {
@@ -74,8 +76,7 @@ const Chat: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([
     { role: 'system', content: defaultAssistant.systemPrompt }
   ]);
-  
-  const [inputValue, setInputValue] = useState<string>('');
+    const [inputValue, setInputValue] = useState<string>('');
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [currentBotMessage, setCurrentBotMessage] = useState<string | null>(null);
@@ -97,11 +98,27 @@ const Chat: React.FC = () => {
   const [selectedModel, setSelectedModel] = useState<string>('openai/gpt-3.5-turbo');
   const [modelsLoading, setModelsLoading] = useState<boolean>(false);
   const [modelsError, setModelsError] = useState<string | null>(null);
-  
-  // Stati per i modelli personalizzati salvati
+    // Stati per i modelli personalizzati salvati
   const [savedCustomModels, setSavedCustomModels] = useState<SavedCustomModel[]>([]);
   const [showSavedModels, setShowSavedModels] = useState<boolean>(false);
   const [testingCustomModel, setTestingCustomModel] = useState<boolean>(false);
+  
+  // Stati per la sidebar della cronologia chat
+  const [showChatSidebar, setShowChatSidebar] = useState<boolean>(false);
+  const [chatSavePath, setChatSavePath] = useState<string>('');
+  const [autoSaveChats, setAutoSaveChats] = useState<boolean>(true);
+  const [maxHistoryFiles, setMaxHistoryFiles] = useState<number>(50);
+  const [currentChatId, setCurrentChatId] = useState<string | null>(null);
+  
+  // Interfaccia per la cronologia delle chat
+  interface ChatHistory {
+    id: string;
+    title: string;
+    timestamp: Date;
+    messages: Message[];
+    assistant: string;
+    model: string;
+  }
   
   // Funzione per aprire il modal di creazione modello
   const openCreateModelModal = () => {
@@ -269,13 +286,155 @@ const Chat: React.FC = () => {
       setModelsLoading(false);
     }
   };
-
   // Carica i modelli quando viene aperto il popup delle impostazioni
   useEffect(() => {
     if (showSettingsPopup && availableModels.length === 0) {
       loadAvailableModels();
     }
   }, [showSettingsPopup]);
+
+  // Carica le impostazioni della cronologia chat da localStorage
+  useEffect(() => {
+    const storedSavePath = localStorage.getItem('chat_save_path');
+    const storedAutoSave = localStorage.getItem('auto_save_chats');
+    const storedMaxFiles = localStorage.getItem('max_history_files');
+    
+    if (storedSavePath) setChatSavePath(storedSavePath);
+    if (storedAutoSave) setAutoSaveChats(storedAutoSave === 'true');
+    if (storedMaxFiles) setMaxHistoryFiles(parseInt(storedMaxFiles) || 50);
+  }, []);
+  // Funzione per salvare automaticamente la chat
+  const autoSaveCurrentChat = async () => {
+    if (!autoSaveChats || !chatSavePath || messages.length <= 1) return;
+    
+    try {
+      const chatData: ChatHistory = {
+        id: currentChatId || Date.now().toString(),
+        title: generateChatTitle(messages),
+        timestamp: new Date(),
+        messages: messages,
+        assistant: currentAssistant.name,
+        model: selectedModel
+      };
+      
+      await window.ipcRenderer.invoke('save-chat-file', chatSavePath, chatData);
+      
+      if (!currentChatId) {
+        setCurrentChatId(chatData.id);
+      }
+    } catch (error) {
+      console.error('Errore nel salvataggio automatico della chat:', error);
+    }
+  };
+
+  // Salva automaticamente quando i messaggi cambiano
+  useEffect(() => {
+    if (messages.length > 1) {
+      const timeoutId = setTimeout(() => {
+        autoSaveCurrentChat();
+      }, 2000);
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [messages, autoSaveChats, chatSavePath]);
+
+  // Genera il titolo della chat basato sui primi messaggi
+  const generateChatTitle = (messages: Message[]) => {
+    const userMessages = messages.filter(msg => msg.sender === 'user');
+    if (userMessages.length > 0) {
+      const firstMessage = userMessages[0].text;
+      return firstMessage.length > 30 
+        ? firstMessage.substring(0, 30) + '...'
+        : firstMessage;
+    }
+    return 'Chat Senza Titolo';
+  };
+
+  // Funzioni per la gestione delle impostazioni della cronologia
+  const handleChatSavePathChange = (path: string) => {
+    setChatSavePath(path);
+    localStorage.setItem('chat_save_path', path);
+  };
+
+  const handleAutoSaveChatsChange = (enabled: boolean) => {
+    setAutoSaveChats(enabled);
+    localStorage.setItem('auto_save_chats', enabled.toString());
+  };
+
+  const handleMaxHistoryFilesChange = (max: number) => {
+    setMaxHistoryFiles(max);
+    localStorage.setItem('max_history_files', max.toString());
+  };
+  const handleSelectChatSaveFolder = async () => {
+    try {
+      const result = await window.ipcRenderer.invoke('select-folder');
+      if (result && !result.canceled) {
+        handleChatSavePathChange(result.filePaths[0]);
+      }
+    } catch (error) {
+      console.error('Errore nella selezione della cartella:', error);
+      alert('Errore nella selezione della cartella');
+    }
+  };
+  const handleClearChatHistory = async () => {
+    if (window.confirm('Sei sicuro di voler eliminare tutta la cronologia delle chat? Questa azione non può essere annullata.')) {
+      try {
+        await window.ipcRenderer.invoke('clear-chat-history', chatSavePath);
+        alert('Cronologia chat eliminata con successo');
+      } catch (error) {
+        console.error('Errore nell\'eliminazione della cronologia:', error);
+        alert('Errore nell\'eliminazione della cronologia');
+      }
+    }
+  };
+  const handleExportAllChats = async () => {
+    try {
+      const result = await window.ipcRenderer.invoke('export-all-chats', chatSavePath);
+      if (result) {
+        alert('Tutte le chat sono state esportate con successo');
+      }
+    } catch (error) {
+      console.error('Errore nell\'esportazione delle chat:', error);
+      alert('Errore nell\'esportazione delle chat');
+    }
+  };
+
+  // Funzioni per la gestione della sidebar delle chat
+  const handleToggleChatSidebar = () => {
+    setShowChatSidebar(!showChatSidebar);
+  };
+
+  const handleLoadChat = (chat: ChatHistory) => {
+    setMessages(chat.messages);
+    setCurrentChatId(chat.id);
+    
+    // Ricostruisce la cronologia per l'API
+    const systemMessage = { role: 'system' as const, content: currentAssistant.systemPrompt };
+    const chatMessages = chat.messages
+      .filter(msg => msg.sender !== 'bot' || msg.text !== currentAssistant.welcomeMessage)
+      .map(msg => ({
+        role: msg.sender === 'user' ? 'user' as const : 'assistant' as const,
+        content: msg.text
+      }));
+    
+    setChatHistory([systemMessage, ...chatMessages]);
+    setShowChatSidebar(false);
+  };
+
+  const handleDeleteChatFromSidebar = (chatId: string) => {
+    if (currentChatId === chatId) {
+      // Se la chat eliminata è quella corrente, resetta la chat
+      setCurrentChatId(null);
+      setMessages([{
+        id: 1,
+        text: currentAssistant.welcomeMessage,
+        sender: 'bot',
+        timestamp: new Date(),
+      }]);
+      setChatHistory([{ role: 'system', content: currentAssistant.systemPrompt }]);
+    }
+  };
+
   // Funzione per caricare un modello personalizzato salvato
   const loadCustomModel = (model: SavedCustomModel) => {
     // Cambia all'assistente personalizzato
@@ -542,8 +701,7 @@ const Chat: React.FC = () => {
   };
     return (
     <>
-      {/* Modal delle impostazioni con sidebar */}
-      <SettingsModal
+      {/* Modal delle impostazioni con sidebar */}      <SettingsModal
         isOpen={showSettingsPopup}
         activeTab={activeSettingsTab}
         currentAssistant={currentAssistant}
@@ -557,6 +715,9 @@ const Chat: React.FC = () => {
         showSavedModels={showSavedModels}
         apiKeyInput={apiKeyInput}
         customApiKey={customApiKey}
+        chatSavePath={chatSavePath}
+        autoSaveChats={autoSaveChats}
+        maxHistoryFiles={maxHistoryFiles}
         onClose={handleCloseSettings}
         onTabChange={setActiveSettingsTab}
         onAssistantChange={handleChangeAssistant}
@@ -572,6 +733,12 @@ const Chat: React.FC = () => {
         onApiKeyChange={setApiKeyInput}
         onSaveApiKey={handleSaveApiKey}
         onRemoveApiKey={handleClearApiKey}
+        onChatSavePathChange={handleChatSavePathChange}
+        onAutoSaveChatsChange={handleAutoSaveChatsChange}
+        onMaxHistoryFilesChange={handleMaxHistoryFilesChange}
+        onSelectChatSaveFolder={handleSelectChatSaveFolder}
+        onClearChatHistory={handleClearChatHistory}
+        onExportAllChats={handleExportAllChats}
         onClearChat={handleClearChat}
         onExportChat={handleExportChat}
         onResetSettings={handleResetSettings}
@@ -588,12 +755,24 @@ const Chat: React.FC = () => {
         onPromptChange={setNewModelPrompt}
         onSave={saveNewModelFromModal}
         onClose={closeCreateModelModal}
-        onTest={testNewModel}
+        onTest={testNewModel}      />
+
+      {/* Sidebar per la cronologia delle chat */}
+      <ChatSidebar
+        isOpen={showChatSidebar}
+        onToggle={handleToggleChatSidebar}
+        onLoadChat={handleLoadChat}
+        onDeleteChat={handleDeleteChatFromSidebar}
+        currentChatId={currentChatId}
+        savePath={chatSavePath}
       />
 
-      <div className="chat-container">
-        {/* Intestazione della chat */}
-        <ChatHeader onSettingsClick={() => setShowSettingsPopup(true)} />
+      <div className={`chat-container ${showChatSidebar ? 'sidebar-open' : ''}`}>        {/* Intestazione della chat */}
+        <ChatHeader 
+          onSettingsClick={() => setShowSettingsPopup(true)}
+          onSidebarToggle={handleToggleChatSidebar}
+          sidebarOpen={showChatSidebar}
+        />
         
       {/* Contenitore centrale per limitare la larghezza della chat */}
       <div className="chat-content">
