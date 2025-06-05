@@ -276,11 +276,11 @@ const Chat: React.FC = () => {
       loadAvailableModels();
     }
   }, [showSettingsPopup]);
-
   // Funzione per caricare un modello personalizzato salvato
   const loadCustomModel = (model: SavedCustomModel) => {
     // Cambia all'assistente personalizzato
-    setCurrentAssistant(findAssistantById('custom'));
+    const customAssistant = findAssistantById('custom');
+    setCurrentAssistant(customAssistant);
     
     // Imposta il prompt personalizzato
     setCustomPrompt(model.prompt);
@@ -289,8 +289,22 @@ const Chat: React.FC = () => {
     setSelectedModel(model.modelId);
     localStorage.setItem('openrouter_selected_model', model.modelId);
     
+    // Reset della chat con il messaggio di benvenuto dell'assistente personalizzato
+    setMessages([{
+      id: 1,
+      text: `Ciao! Sono il tuo assistente personalizzato "${model.title}". Come posso aiutarti oggi?`,
+      sender: 'bot',
+      timestamp: new Date(),
+    }]);
+    
+    // Aggiorna la cronologia della chat con il prompt personalizzato
+    setChatHistory([{ role: 'system', content: model.prompt }]);
+    
     // Chiudi la lista dei modelli salvati
     setShowSavedModels(false);
+    
+    // Reset eventuali errori
+    setError(null);
     
     // Mostra notifica
     alert(`Modello "${model.title}" caricato con successo!`);
