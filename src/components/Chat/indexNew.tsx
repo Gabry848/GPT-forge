@@ -118,14 +118,21 @@ const Chat: React.FC = () => {
                 messages={props.messages}
                 isTyping={props.isTyping}
                 error={props.error}
-              />              {/* Input per scrivere il messaggio */}
+              />
+
+              {/* Input per scrivere il messaggio */}
               <InputArea
                 ref={props.inputRef}
                 inputValue={props.inputValue}
                 isTyping={props.isTyping}
                 currentMessage={props.currentBotMessage}
                 onInputChange={props.setInputValue}
-                onSendMessage={() => props.handleSendMessage(props.inputValue)}
+                onSendMessage={async () => {
+                  const success = await props.handleSendMessage(props.inputValue);
+                  if (success) {
+                    props.setInputValue('');
+                  }
+                }}
                 onKeyDown={props.handleKeyDown}
                 onVoiceText={props.handleVoiceText}        
               />
