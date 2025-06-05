@@ -53,6 +53,27 @@
 .header-actions {
   display: flex;
   align-items: center;
+  gap: 1.5rem; /* Maggiore distanza tra i bottoni */
+}
+
+.new-chat-button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.7rem;
+  cursor: pointer;
+  padding: 0.5rem 1.1rem;
+  border-radius: 50%;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+}
+
+.new-chat-button:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 @media (max-width: 480px) {

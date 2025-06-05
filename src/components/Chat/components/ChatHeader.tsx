@@ -28,7 +28,11 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ onSettingsClick, onSidebarToggl
           aria-label="Nuova Chat"
           title="Nuova Chat"
         >
-          📝
+          <span
+            role="img"
+            aria-label="plus-icon"
+            style={{ fontSize: '1.7rem', marginRight: 0 }}
+          >✚</span>
         </button>
         <button 
           className="settings-button"
