@@ -21,6 +21,7 @@ export interface ChatLogicRenderProps {
   // Chat state
   currentAssistant: ReturnType<typeof useChat>['currentAssistant'];
   customPrompt: string;
+  customAssistantName: string;
   messages: ReturnType<typeof useChat>['messages'];
   chatHistory: ReturnType<typeof useChat>['chatHistory'];
   inputValue: string;
@@ -63,9 +64,9 @@ export interface ChatLogicRenderProps {
   showCustomPromptForm: boolean;
   showCustomPromptInSettings: boolean;
   activeSettingsTab: ReturnType<typeof useSettings>['activeSettingsTab'];
-  
-  // Actions
+    // Actions
   handleSendMessage: (inputValue: string) => Promise<boolean>;
+  handleRegenerateResponse: (messageId: number) => Promise<boolean>;
   handleNewChat: () => void;
   handleClearChat: () => void;
   handleExportChat: () => void;
@@ -120,8 +121,7 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
   const apiKey = useApiKey();
   const chatHistory = useChatHistory();
   const settings = useSettings();
-  
-  const messageHandler = useMessageHandler(
+    const messageHandler = useMessageHandler(
     chat.messages,
     chat.setMessages,
     chat.chatHistory,
@@ -280,11 +280,12 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
       handleNewChat();
     }
   };
-
   const loadCustomModel = (model: SavedCustomModel) => {
     const customAssistant = findAssistantById('custom');
     chat.updateAssistant(customAssistant);
     chat.setCustomPrompt(model.prompt);
+    // Imposta il nome specifico del modello personalizzato
+    chat.setCustomAssistantTitle(model.title);
     models.handleModelChange(model.modelId);
 
     chat.setMessages([{
@@ -352,11 +353,11 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
     
     customModels.setTestingCustomModel(false);
   };
-
   const renderProps: ChatLogicRenderProps = {
     // State
     currentAssistant: chat.currentAssistant,
     customPrompt: chat.customPrompt,
+    customAssistantName: chat.customAssistantName,
     messages: chat.messages,
     chatHistory: chat.chatHistory,
     inputValue: chat.inputValue,
@@ -392,10 +393,9 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
     showSettingsPopup: settings.showSettingsPopup,
     showCustomPromptForm: settings.showCustomPromptForm,
     showCustomPromptInSettings: settings.showCustomPromptInSettings,
-    activeSettingsTab: settings.activeSettingsTab,
-    
-    // Actions
+    activeSettingsTab: settings.activeSettingsTab,    // Actions
     handleSendMessage: messageHandler.handleSendMessage,
+    handleRegenerateResponse: messageHandler.handleRegenerateResponse,
     handleNewChat,
     handleClearChat,
     handleExportChat,

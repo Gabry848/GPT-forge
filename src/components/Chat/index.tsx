@@ -99,13 +99,16 @@ const Chat: React.FC = () => {
             savePath={props.chatSavePath}
           />
 
-          <div className={`chat-container ${props.showChatSidebar ? 'sidebar-open' : ''}`}>
-            {/* Intestazione della chat */}
-            <ChatHeader 
+          <div className={`chat-container ${props.showChatSidebar ? 'sidebar-open' : ''}`}>            {/* Intestazione della chat */}            <ChatHeader 
               onSettingsClick={() => props.setShowSettingsPopup(true)}
               onSidebarToggle={props.handleToggleChatSidebar}
               onNewChat={props.handleNewChat}
               sidebarOpen={props.showChatSidebar}
+              assistantName={
+                props.currentAssistant.id === 'custom' && props.customAssistantName 
+                  ? props.customAssistantName 
+                  : props.currentAssistant.name
+              }
             />
             
             {/* Contenitore centrale per limitare la larghezza della chat */}
@@ -119,13 +122,13 @@ const Chat: React.FC = () => {
                   onCancel={() => props.setShowCustomPromptForm(false)}
                 />
               )}
-                
-              {/* Container dei messaggi */}
+                  {/* Container dei messaggi */}
               <MessagesContainer
                 messages={props.messages}
                 isTyping={props.isTyping}
                 error={props.error}
-              />              {/* Input per scrivere il messaggio */}
+                onRegenerateResponse={props.handleRegenerateResponse}
+              />{/* Input per scrivere il messaggio */}
               <InputArea
                 ref={props.inputRef}
                 inputValue={props.inputValue}

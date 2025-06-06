@@ -16,6 +16,7 @@ export interface ChatMessage {
 export const useChat = () => {
   const [currentAssistant, setCurrentAssistant] = useState<AssistantConfig>(defaultAssistant);
   const [customPrompt, setCustomPrompt] = useState<string>('');
+  const [customAssistantName, setCustomAssistantName] = useState<string>('');
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -62,10 +63,13 @@ export const useChat = () => {
       }
     }, 100);
   };
-
   const updateAssistant = (assistant: AssistantConfig) => {
     setCurrentAssistant(assistant);
     setChatHistory([{ role: 'system', content: assistant.systemPrompt }]);
+    // Reset del nome personalizzato quando cambia assistente
+    if (assistant.id !== 'custom') {
+      setCustomAssistantName('');
+    }
   };
 
   const updateCustomPrompt = (prompt: string) => {
@@ -73,10 +77,15 @@ export const useChat = () => {
     setChatHistory([{ role: 'system', content: prompt.trim() }]);
   };
 
+  const setCustomAssistantTitle = (name: string) => {
+    setCustomAssistantName(name);
+  };
+
   return {
     // State
     currentAssistant,
     customPrompt,
+    customAssistantName,
     messages,
     chatHistory,
     inputValue,
@@ -89,6 +98,7 @@ export const useChat = () => {
     // Setters
     setCurrentAssistant,
     setCustomPrompt,
+    setCustomAssistantName,
     setMessages,
     setChatHistory,
     setInputValue,
@@ -101,5 +111,6 @@ export const useChat = () => {
     resetChat,
     updateAssistant,
     updateCustomPrompt,
+    setCustomAssistantTitle,
   };
 };

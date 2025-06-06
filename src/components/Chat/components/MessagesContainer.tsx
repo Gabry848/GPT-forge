@@ -12,12 +12,14 @@ interface MessagesContainerProps {
   messages: Message[];
   isTyping: boolean;
   error: string | null;
+  onRegenerateResponse?: (messageId: number) => void;
 }
 
 const MessagesContainer: React.FC<MessagesContainerProps> = ({ 
   messages, 
   isTyping, 
-  error 
+  error,
+  onRegenerateResponse
 }) => {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -28,10 +30,13 @@ const MessagesContainer: React.FC<MessagesContainerProps> = ({
     }
   }, [messages, isTyping]);
 
-  return (
-    <div className="messages-container" ref={messagesContainerRef}>
+  return (    <div className="messages-container" ref={messagesContainerRef}>
       {messages.map(message => (
-        <MessageBubble key={message.id} message={message} />
+        <MessageBubble 
+          key={message.id} 
+          message={message} 
+          onRegenerateResponse={onRegenerateResponse}
+        />
       ))}
       
       {/* Indicatore "sta scrivendo..." */}

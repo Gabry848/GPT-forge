@@ -11,6 +11,7 @@ interface Message {
 interface MessageBubbleProps {
   message: Message;
   onCopy?: (text: string) => void;
+  onRegenerateResponse?: (messageId: number) => void;
 }
 
 // Componente per blocco codice con tasto copia
@@ -37,7 +38,7 @@ const CodeBlockWithCopy = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
+const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onRegenerateResponse }) => {
   const formatTime = (date: Date): string => {
     return date.toLocaleTimeString('it-IT', { 
       hour: '2-digit', 
@@ -50,8 +51,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
   };
 
   const handleRegenerateResponse = () => {
-    // Logica per rigenerare la risposta (da implementare)
-    console.log('Rigenerando risposta...');
+    if (onRegenerateResponse && message.sender === 'bot') {
+      onRegenerateResponse(message.id);
+    }
   };
 
   const handleShareMessage = () => {

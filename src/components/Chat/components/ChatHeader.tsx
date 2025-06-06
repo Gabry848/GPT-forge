@@ -6,9 +6,10 @@ interface ChatHeaderProps {
   onSidebarToggle: () => void;
   onNewChat: () => void;
   sidebarOpen: boolean;
+  assistantName: string;
 }
 
-const ChatHeader: React.FC<ChatHeaderProps> = ({ onSettingsClick, onSidebarToggle, onNewChat, sidebarOpen }) => {
+const ChatHeader: React.FC<ChatHeaderProps> = ({ onSettingsClick, onSidebarToggle, onNewChat, sidebarOpen, assistantName }) => {
   return (
     <div className="chat-header">
       <div className="header-left">
@@ -20,7 +21,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ onSettingsClick, onSidebarToggl
         >
           {sidebarOpen ? '×' : '☰'}
         </button>
-        <h2>ChatBot AI</h2>      </div>        
+        <h2>{assistantName}</h2>      </div>        
       <div className="header-actions">
         <button 
           className="new-chat-button"
