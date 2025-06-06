@@ -258,13 +258,18 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
   const handleToggleChatSidebar = () => {
     chatHistory.setShowChatSidebar(!chatHistory.showChatSidebar);
   };
-
   const handleLoadChat = (chatData: ChatHistory) => {
-    chat.setMessages(chatData.messages);
+    // Converti i timestamp dei messaggi in oggetti Date se necessario
+    const messagesWithCorrectTimestamps = chatData.messages.map(msg => ({
+      ...msg,
+      timestamp: msg.timestamp instanceof Date ? msg.timestamp : new Date(msg.timestamp)
+    }));
+    
+    chat.setMessages(messagesWithCorrectTimestamps);
     chat.setCurrentChatId(chatData.id);
     
     const systemMessage = { role: 'system' as const, content: chat.currentAssistant.systemPrompt };
-    const chatMessages = chatData.messages
+    const chatMessages = messagesWithCorrectTimestamps
       .filter(msg => msg.sender !== 'bot' || msg.text !== chat.currentAssistant.welcomeMessage)
       .map(msg => ({
         role: msg.sender === 'user' ? 'user' as const : 'assistant' as const,

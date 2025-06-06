@@ -45,12 +45,14 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
       }
 
       // Verifica se la cartella esiste e carica i file JSON
-      const savedChats = await window.ipcRenderer.invoke('load-chat-history', savePath);
-      
-      if (savedChats && Array.isArray(savedChats)) {
+      const savedChats = await window.ipcRenderer.invoke('load-chat-history', savePath);      if (savedChats && Array.isArray(savedChats)) {
         const formattedChats = savedChats.map(chat => ({
           ...chat,
-          timestamp: new Date(chat.timestamp)
+          timestamp: new Date(chat.timestamp),
+          messages: chat.messages.map((msg: any) => ({
+            ...msg,
+            timestamp: msg.timestamp instanceof Date ? msg.timestamp : new Date(msg.timestamp)
+          }))
         }));
         setChatHistory(formattedChats);
       }

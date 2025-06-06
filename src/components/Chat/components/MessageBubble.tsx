@@ -5,7 +5,7 @@ interface Message {
   id: number;
   text: string;
   sender: 'user' | 'bot';
-  timestamp: Date;
+  timestamp: Date | string;
 }
 
 interface MessageBubbleProps {
@@ -39,8 +39,9 @@ const CodeBlockWithCopy = ({ children }: { children: React.ReactNode }) => {
 };
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onRegenerateResponse }) => {
-  const formatTime = (date: Date): string => {
-    return date.toLocaleTimeString('it-IT', { 
+  const formatTime = (date: Date | string): string => {
+    const dateObj = date instanceof Date ? date : new Date(date);
+    return dateObj.toLocaleTimeString('it-IT', { 
       hour: '2-digit', 
       minute: '2-digit' 
     });
