@@ -15,6 +15,11 @@ export const useCustomModels = () => {
   const [newModelTitle, setNewModelTitle] = useState<string>('');
   const [newModelPrompt, setNewModelPrompt] = useState<string>('');
   const [testingCustomModel, setTestingCustomModel] = useState<boolean>(false);
+  
+  // Stati per il modal di test
+  const [showTestModal, setShowTestModal] = useState<boolean>(false);
+  const [testModelName, setTestModelName] = useState<string>('');
+  const [testModelOutput, setTestModelOutput] = useState<string>('');
 
   // Carica i modelli personalizzati salvati da localStorage
   const loadSavedCustomModels = () => {
@@ -81,12 +86,22 @@ export const useCustomModels = () => {
       localStorage.setItem('saved_custom_models', JSON.stringify(updatedModels));
     }
   };
-
   const clearAllCustomModels = () => {
     setSavedCustomModels([]);
     localStorage.removeItem('saved_custom_models');
   };
 
+  const openTestModal = (modelName: string, output: string) => {
+    setTestModelName(modelName);
+    setTestModelOutput(output);
+    setShowTestModal(true);
+  };
+
+  const closeTestModal = () => {
+    setShowTestModal(false);
+    setTestModelName('');
+    setTestModelOutput('');
+  };
   return {
     savedCustomModels,
     showSavedModels,
@@ -94,6 +109,9 @@ export const useCustomModels = () => {
     newModelTitle,
     newModelPrompt,
     testingCustomModel,
+    showTestModal,
+    testModelName,
+    testModelOutput,
     setShowSavedModels,
     setNewModelTitle,
     setNewModelPrompt,
@@ -103,5 +121,7 @@ export const useCustomModels = () => {
     saveNewModel,
     deleteCustomModel,
     clearAllCustomModels,
+    openTestModal,
+    closeTestModal,
   };
 };

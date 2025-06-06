@@ -35,14 +35,18 @@ export interface ChatLogicRenderProps {
   selectedModel: string;
   modelsLoading: boolean;
   modelsError: string | null;
-  
-  // Custom models state
+    // Custom models state
   savedCustomModels: SavedCustomModel[];
   showSavedModels: boolean;
   showCreateModelModal: boolean;
   newModelTitle: string;
   newModelPrompt: string;
   testingCustomModel: boolean;
+  
+  // Test modal state
+  showTestModal: boolean;
+  testModelName: string;
+  testModelOutput: string;
   
   // API key state
   apiKeyInput: string;
@@ -80,11 +84,11 @@ export interface ChatLogicRenderProps {
   handleLoadChat: (chat: ChatHistory) => void;
   handleDeleteChatFromSidebar: (chatId: string) => void;
   loadCustomModel: (model: SavedCustomModel) => void;
-  deleteCustomModel: (modelId: string) => void;
-  openCreateModelModal: () => void;
+  deleteCustomModel: (modelId: string) => void;  openCreateModelModal: () => void;
   closeCreateModelModal: () => void;
   saveNewModelFromModal: () => void;
   testNewModel: () => Promise<void>;
+  closeTestModal: () => void;
   loadAvailableModels: () => Promise<void>;
   
   // Setters
@@ -330,15 +334,18 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
       customModels.setTestingCustomModel(false);
       return;
     }
-    
-    const result = await OpenRouterService.testCustomModel(
+      const result = await OpenRouterService.testCustomModel(
       apiKeyValue,
       models.selectedModel,
       customModels.newModelPrompt
     );
     
     if (result.success) {
-      alert(`Test completato!\\n\\nRisposta del modello:\\n"${result.response}"`);
+      // Apri il modal di test invece dell'alert
+      customModels.openTestModal(
+        customModels.newModelTitle || models.selectedModel,
+        result.response || 'Nessuna risposta ricevuta'
+      );
     } else {
       alert(result.error || 'Errore durante il test del modello');
     }
@@ -363,13 +370,16 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
     selectedModel: models.selectedModel,
     modelsLoading: models.modelsLoading,
     modelsError: models.modelsError,
-    
-    savedCustomModels: customModels.savedCustomModels,
+      savedCustomModels: customModels.savedCustomModels,
     showSavedModels: customModels.showSavedModels,
     showCreateModelModal: customModels.showCreateModelModal,
     newModelTitle: customModels.newModelTitle,
     newModelPrompt: customModels.newModelPrompt,
     testingCustomModel: customModels.testingCustomModel,
+    
+    showTestModal: customModels.showTestModal,
+    testModelName: customModels.testModelName,
+    testModelOutput: customModels.testModelOutput,
     
     apiKeyInput: apiKey.apiKeyInput,
     customApiKey: apiKey.customApiKey,
@@ -404,11 +414,11 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
     handleLoadChat,
     handleDeleteChatFromSidebar,
     loadCustomModel,
-    deleteCustomModel: customModels.deleteCustomModel,
-    openCreateModelModal: customModels.openCreateModelModal,
+    deleteCustomModel: customModels.deleteCustomModel,    openCreateModelModal: customModels.openCreateModelModal,
     closeCreateModelModal: customModels.closeCreateModelModal,
     saveNewModelFromModal,
     testNewModel,
+    closeTestModal: customModels.closeTestModal,
     loadAvailableModels: models.loadAvailableModels,
     
     // Setters

@@ -13,6 +13,7 @@ import './ChatSidebar.css';
 import ChatHeader from './components/ChatHeader';
 import SettingsModal from './components/SettingsModal';
 import CreateModelModal from './components/CreateModelModal';
+import TestModelModal from './components/TestModelModal';
 import CustomPromptForm from './components/CustomPromptForm';
 import MessagesContainer from './components/MessagesContainer';
 import InputArea from './components/InputArea';
@@ -66,9 +67,7 @@ const Chat: React.FC = () => {
             onClearChat={props.handleClearChat}
             onExportChat={props.handleExportChat}
             onResetSettings={props.handleResetSettings}
-          />
-
-          {/* Modal per creazione nuovo modello */}
+          />          {/* Modal per creazione nuovo modello */}
           <CreateModelModal
             isOpen={props.showCreateModelModal}
             title={props.newModelTitle}
@@ -80,6 +79,14 @@ const Chat: React.FC = () => {
             onSave={props.saveNewModelFromModal}
             onClose={props.closeCreateModelModal}
             onTest={props.testNewModel}
+          />
+
+          {/* Modal per risultati test modello */}
+          <TestModelModal
+            isOpen={props.showTestModal}
+            modelName={props.testModelName}
+            output={props.testModelOutput}
+            onClose={props.closeTestModal}
           />
 
           {/* Sidebar per la cronologia delle chat */}
