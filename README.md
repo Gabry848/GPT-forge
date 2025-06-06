@@ -70,9 +70,9 @@ npm run dev
 
 ### First Run Setup
 
-1. **🔑 Add your OpenAI API Key**
+1. **🔑 Add your OpenRouter API Key**
    - Click the settings icon in the chat interface
-   - Enter your OpenAI API key
+   - Enter your OpenRouter API key
    - Save and start chatting!
 
 2. **🎤 Test Voice Features**
@@ -229,6 +229,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ### 🌟 Star this repository if you find it helpful!
 
-**Built with ❤️ using React, Electron, and OpenAI**
+**Built with ❤️ using React, Electron, and OpenRouter**
 
 </div>
