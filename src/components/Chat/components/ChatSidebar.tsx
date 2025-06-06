@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import ConfirmationModal from '../../Common/ConfirmationModal';
+import { useConfirmation } from '../../../hooks/useConfirmation';
 
 interface ChatHistory {
   id: string;
@@ -35,6 +37,9 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'date' | 'title'>('date');
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Hook per la conferma
+  const { confirmationState, showConfirmation } = useConfirmation();
   // Carica la cronologia delle chat
   const loadChatHistory = async () => {
     setIsLoading(true);
@@ -98,12 +103,19 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
       month: '2-digit',
       year: 'numeric'
     });
-  };
-  // Gestisce la cancellazione di una chat
+  };  // Gestisce la cancellazione di una chat
   const handleDeleteChat = async (chatId: string, event: React.MouseEvent) => {
     event.stopPropagation();
     
-    if (window.confirm('Sei sicuro di voler eliminare questa chat?')) {
+    const confirmed = await showConfirmation({
+      title: 'Elimina Chat',
+      message: 'Sei sicuro di voler eliminare questa chat? Questa azione non può essere annullata.',
+      confirmText: 'Elimina',
+      cancelText: 'Annulla',
+      type: 'danger'
+    });
+    
+    if (confirmed) {
       try {
         await window.ipcRenderer.invoke('delete-chat-file', savePath, chatId);
         onDeleteChat(chatId);
@@ -238,9 +250,20 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
                 )}
               </div>
             )}
-          </div>
-        )}
+          </div>        )}
       </div>
+      
+      {/* Modal di conferma */}
+      <ConfirmationModal
+        isOpen={confirmationState.isOpen}
+        title={confirmationState.title}
+        message={confirmationState.message}
+        confirmText={confirmationState.confirmText}
+        cancelText={confirmationState.cancelText}
+        type={confirmationState.type}
+        onConfirm={confirmationState.onConfirm}
+        onCancel={confirmationState.onCancel}
+      />
     </>
   );
 };

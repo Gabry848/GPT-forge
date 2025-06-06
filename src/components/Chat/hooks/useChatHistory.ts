@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Message } from './useChat';
+import { useConfirmation } from '../../../hooks/useConfirmation';
 
 export interface ChatHistory {
   id: string;
@@ -15,6 +16,9 @@ export const useChatHistory = () => {
   const [autoSaveChats, setAutoSaveChats] = useState<boolean>(true);
   const [maxHistoryFiles, setMaxHistoryFiles] = useState<number>(50);
   const [showChatSidebar, setShowChatSidebar] = useState<boolean>(false);
+  
+  // Hook per la conferma
+  const { showConfirmation } = useConfirmation();
 
   // Carica le impostazioni della cronologia chat da localStorage
   useEffect(() => {
@@ -53,9 +57,16 @@ export const useChatHistory = () => {
       alert('Errore nella selezione della cartella');
     }
   };
-
   const handleClearChatHistory = async () => {
-    if (window.confirm('Sei sicuro di voler eliminare tutta la cronologia delle chat? Questa azione non può essere annullata.')) {
+    const confirmed = await showConfirmation({
+      title: 'Elimina Cronologia',
+      message: 'Sei sicuro di voler eliminare tutta la cronologia delle chat? Questa azione non può essere annullata.',
+      confirmText: 'Elimina Tutto',
+      cancelText: 'Annulla',
+      type: 'danger'
+    });
+    
+    if (confirmed) {
       try {
         await window.ipcRenderer.invoke('clear-chat-history', chatSavePath);
         alert('Cronologia chat eliminata con successo');

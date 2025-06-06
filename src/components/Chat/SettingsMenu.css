@@ -1,49 +1,84 @@
-/* Menu impostazioni */
+/* Menu impostazioni - Modern Design */
 .settings-button {
   background: none;
   border: none;
-  color: white;
+  color: #e2e8f0;
   font-size: 1.3rem;
   cursor: pointer;
-  padding: 5px;
-  opacity: 0.85;
-  transition: opacity 0.2s;
+  padding: 8px;
+  opacity: 0.8;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
 }
-.settings-button:hover { opacity: 1; }
+
+.settings-button:hover { 
+  opacity: 1; 
+  background: rgba(139, 92, 246, 0.2);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
 
 .settings-menu {
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  width: 200px;
+  background: linear-gradient(
+    145deg,
+    #0a0f1c 0%,
+    #1e1b35 20%,
+    #2d2252 60%,
+    #1e1b35 100%
+  );
+  border-radius: 12px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(139, 92, 246, 0.3);
+  width: 220px;
   z-index: 20;
   overflow: hidden;
-  margin-top: 5px;
-  animation: slide-down 0.2s ease;
+  margin-top: 8px;
+  animation: slide-down 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(139, 92, 246, 0.3);
 }
 
 .clear-chat-button {
   width: 100%;
-  padding: 15px;
+  padding: 16px 20px;
   border: none;
   background: none;
   text-align: left;
   cursor: pointer;
-  font-size: 15px;
-  color: #333;
-  transition: background-color 0.2s;
+  font-size: 14px;
+  color: #e2e8f0;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.clear-chat-button:hover { background-color: #f0f2f5; }
+
+.clear-chat-button:hover { 
+  background: rgba(139, 92, 246, 0.2);
+  color: #f1f5f9;
+  transform: translateX(4px);
+}
 
 @keyframes slide-down {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { 
+    opacity: 0; 
+    transform: translateY(-15px) scale(0.95);
+    filter: blur(5px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
 }
 
 @media (max-width: 480px) {

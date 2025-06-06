@@ -66,11 +66,10 @@ export interface ChatLogicRenderProps {
   activeSettingsTab: ReturnType<typeof useSettings>['activeSettingsTab'];
     // Actions
   handleSendMessage: (inputValue: string) => Promise<boolean>;
-  handleRegenerateResponse: (messageId: number) => Promise<boolean>;
-  handleNewChat: () => void;
+  handleRegenerateResponse: (messageId: number) => Promise<boolean>;  handleNewChat: () => void;
   handleClearChat: () => void;
   handleExportChat: () => void;
-  handleResetSettings: () => void;
+  handleResetSettings: () => Promise<void>;
   handleChangeAssistant: (assistantId: string) => void;
   handleSaveCustomPrompt: () => void;
   handleCancelCustomPromptInSettings: () => void;
@@ -175,9 +174,9 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
       chat.currentAssistant.name,
       models.selectedModel
     );
-  };
-  const handleResetSettings = () => {
-    if (settings.handleResetSettings()) {
+  };  const handleResetSettings = async () => {
+    const success = await settings.handleResetSettings();
+    if (success) {
       apiKey.handleClearApiKey();
       models.handleModelChange('openai/gpt-3.5-turbo');
       customModels.clearAllCustomModels();
