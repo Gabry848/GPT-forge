@@ -1,0 +1,368 @@
+/* Custom Models Settings - Tabella Modificabile */
+
+/* Container principale della tabella */
+.custom-models-table-container {
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  margin-top: 16px;
+}
+
+/* Tabella modelli personalizzati */
+.custom-models-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.custom-models-table thead {
+  background-color: var(--bg-secondary);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.custom-models-table th {
+  padding: 14px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+/* Intestazioni specifiche */
+.custom-models-th-title {
+  min-width: 180px;
+  max-width: 220px;
+}
+
+.custom-models-th-model {
+  min-width: 150px;
+  max-width: 180px;
+}
+
+.custom-models-th-prompt {
+  min-width: 300px;
+  width: 40%;
+}
+
+.custom-models-th-date {
+  min-width: 120px;
+  max-width: 140px;
+}
+
+.custom-models-th-actions {
+  min-width: 160px;
+  text-align: center;
+}
+
+/* Righe della tabella */
+.custom-models-row {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s;
+}
+
+.custom-models-row:hover {
+  background-color: var(--bg-secondary);
+}
+
+.custom-models-table td {
+  padding: 12px;
+  vertical-align: top;
+}
+
+/* Celle specifiche */
+.custom-models-td-title,
+.custom-models-td-model {
+  max-width: 220px;
+}
+
+.custom-models-td-prompt {
+  max-width: 400px;
+}
+
+.custom-models-td-date {
+  min-width: 120px;
+}
+
+.custom-models-td-actions {
+  text-align: center;
+  min-width: 160px;
+}
+
+/* Campi modificabili */
+.custom-models-editable-field {
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  word-wrap: break-word;
+  line-height: 1.4;
+  min-height: 20px;
+}
+
+.custom-models-editable-field:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.1);
+}
+
+.custom-models-editable-field:focus {
+  outline: none;
+  background-color: var(--bg-tertiary);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.2);
+}
+
+/* Stile specifico per model ID */
+.custom-models-model-id {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  background-color: var(--bg-tertiary);
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+
+/* Container del prompt */
+.custom-models-prompt-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.custom-models-prompt-preview {
+  white-space: pre-wrap;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+/* Pulsante espandi prompt */
+.custom-models-expand-button {
+  align-self: flex-start;
+  padding: 4px 8px;
+  font-size: 11px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.custom-models-expand-button:hover {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+/* Input di modifica */
+.custom-models-edit-input,
+.custom-models-edit-textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1.5px solid var(--accent-color);
+  border-radius: 6px;
+  font-size: 13px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.custom-models-edit-input:focus,
+.custom-models-edit-textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.2);
+}
+
+.custom-models-edit-textarea {
+  resize: vertical;
+  min-height: 60px;
+  line-height: 1.4;
+}
+
+/* Data di creazione */
+.custom-models-date {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Azioni */
+.custom-models-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.custom-models-action-button {
+  padding: 6px 12px;
+  font-size: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  min-width: 90px;
+}
+
+.custom-models-action-button:hover {
+  background-color: var(--bg-tertiary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-models-load-button:hover {
+  background-color: rgba(34, 197, 94, 0.1);
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.custom-models-delete-button:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Stato vuoto */
+.custom-models-empty {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 20px;
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+
+.custom-models-empty-icon {
+  font-size: 28px;
+  opacity: 0.6;
+}
+
+.custom-models-empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.custom-models-empty-description {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* Scrollbar personalizzata per il container della tabella */
+.custom-models-table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-models-table-container::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+.custom-models-table-container::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.custom-models-table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .custom-models-table-container {
+    max-height: 400px;
+  }
+
+  .custom-models-table {
+    font-size: 12px;
+  }
+
+  .custom-models-table th,
+  .custom-models-table td {
+    padding: 8px 6px;
+  }
+
+  .custom-models-th-title,
+  .custom-models-th-model {
+    min-width: 120px;
+  }
+
+  .custom-models-th-prompt {
+    min-width: 200px;
+  }
+
+  .custom-models-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .custom-models-action-button {
+    font-size: 11px;
+    padding: 4px 8px;
+    min-width: 70px;
+  }
+
+  .custom-models-empty {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-models-table-container {
+    border-radius: 6px;
+  }
+
+  .custom-models-table th {
+    font-size: 12px;
+  }
+
+  .custom-models-editable-field {
+    padding: 6px 8px;
+  }
+
+  .custom-models-edit-input,
+  .custom-models-edit-textarea {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
+
+/* Dark theme enhancements */
+:root.dark .custom-models-table-container::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+:root.dark .custom-models-table-container::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+}
+
+:root.dark .custom-models-table-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(123, 104, 238, 0.5);
+}
+
+:root.dark .custom-models-editable-field:hover {
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.2);
+}
+
+:root.dark .custom-models-edit-input:focus,
+:root.dark .custom-models-edit-textarea:focus {
+  box-shadow: 0 0 0 2px rgba(123, 104, 238, 0.3);
+}

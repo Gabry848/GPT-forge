@@ -34,10 +34,8 @@ const Chat: React.FC = () => {
             showCustomPromptInSettings={props.showCustomPromptInSettings}
             selectedModel={props.selectedModel}
             availableModels={props.availableModels}
-            modelsLoading={props.modelsLoading}
-            modelsError={props.modelsError}
+            modelsLoading={props.modelsLoading}            modelsError={props.modelsError}
             savedCustomModels={props.savedCustomModels}
-            showSavedModels={props.showSavedModels}
             apiKeyInput={props.apiKeyInput}
             customApiKey={props.customApiKey}
             chatSavePath={props.chatSavePath}
@@ -49,12 +47,10 @@ const Chat: React.FC = () => {
             onCustomPromptChange={props.setCustomPrompt}
             onSaveCustomPrompt={props.handleSaveCustomPromptInSettings}
             onCancelCustomPrompt={props.handleCancelCustomPromptInSettings}
-            onModelChange={props.handleModelChange}
-            onLoadModels={props.loadAvailableModels}
-            onCreateModelClick={props.openCreateModelModal}
-            onToggleSavedModels={() => props.setShowSavedModels(!props.showSavedModels)}
+            onModelChange={props.handleModelChange}            onLoadModels={props.loadAvailableModels}            onCreateModelClick={props.openCreateModelModal}
             onLoadModel={props.loadCustomModel}
             onDeleteModel={props.deleteCustomModel}
+            onUpdateModel={props.updateCustomModel}
             onApiKeyChange={props.setApiKeyInput}
             onSaveApiKey={props.handleSaveApiKey}
             onRemoveApiKey={props.handleClearApiKey}

@@ -10,7 +10,6 @@ export interface SavedCustomModel {
 
 export const useCustomModels = () => {
   const [savedCustomModels, setSavedCustomModels] = useState<SavedCustomModel[]>([]);
-  const [showSavedModels, setShowSavedModels] = useState<boolean>(false);
   const [showCreateModelModal, setShowCreateModelModal] = useState<boolean>(false);
   const [newModelTitle, setNewModelTitle] = useState<string>('');
   const [newModelPrompt, setNewModelPrompt] = useState<string>('');
@@ -78,13 +77,20 @@ export const useCustomModels = () => {
 
     closeCreateModelModal();
     return true;
-  };
-  const deleteCustomModel = (modelId: string) => {
+  };  const deleteCustomModel = (modelId: string) => {
     if (confirm('Sei sicuro di voler eliminare questo modello personalizzato?')) {
       const updatedModels = savedCustomModels.filter(model => model.id !== modelId);
       setSavedCustomModels(updatedModels);
       localStorage.setItem('saved_custom_models', JSON.stringify(updatedModels));
     }
+  };
+
+  const updateCustomModel = (updatedModel: SavedCustomModel) => {
+    const updatedModels = savedCustomModels.map(model => 
+      model.id === updatedModel.id ? updatedModel : model
+    );
+    setSavedCustomModels(updatedModels);
+    localStorage.setItem('saved_custom_models', JSON.stringify(updatedModels));
   };
   const clearAllCustomModels = () => {
     setSavedCustomModels([]);
@@ -101,10 +107,8 @@ export const useCustomModels = () => {
     setShowTestModal(false);
     setTestModelName('');
     setTestModelOutput('');
-  };
-  return {
+  };  return {
     savedCustomModels,
-    showSavedModels,
     showCreateModelModal,
     newModelTitle,
     newModelPrompt,
@@ -112,14 +116,13 @@ export const useCustomModels = () => {
     showTestModal,
     testModelName,
     testModelOutput,
-    setShowSavedModels,
     setNewModelTitle,
     setNewModelPrompt,
     setTestingCustomModel,
-    openCreateModelModal,
-    closeCreateModelModal,
+    openCreateModelModal,    closeCreateModelModal,
     saveNewModel,
     deleteCustomModel,
+    updateCustomModel,
     clearAllCustomModels,
     openTestModal,
     closeTestModal,

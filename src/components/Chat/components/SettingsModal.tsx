@@ -35,10 +35,8 @@ interface SettingsModalProps {
   showCustomPromptInSettings: boolean;
   selectedModel: string;
   availableModels: OpenRouterModel[];
-  modelsLoading: boolean;
-  modelsError: string | null;
+  modelsLoading: boolean;  modelsError: string | null;
   savedCustomModels: SavedCustomModel[];
-  showSavedModels: boolean;
   apiKeyInput: string;
   customApiKey: string | null;
   chatSavePath: string;
@@ -49,13 +47,12 @@ interface SettingsModalProps {
   onAssistantChange: (assistantId: string) => void;
   onCustomPromptChange: (prompt: string) => void;
   onSaveCustomPrompt: () => void;
-  onCancelCustomPrompt: () => void;
-  onModelChange: (modelId: string) => void;
+  onCancelCustomPrompt: () => void;  onModelChange: (modelId: string) => void;
   onLoadModels: () => void;
   onCreateModelClick: () => void;
-  onToggleSavedModels: () => void;
   onLoadModel: (model: SavedCustomModel) => void;
   onDeleteModel: (modelId: string) => void;
+  onUpdateModel: (model: SavedCustomModel) => void;
   onApiKeyChange: (key: string) => void;
   onSaveApiKey: () => void;
   onRemoveApiKey: () => void;
@@ -78,10 +75,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   showCustomPromptInSettings,
   selectedModel,
   availableModels,
-  modelsLoading,
-  modelsError,
+  modelsLoading,  modelsError,
   savedCustomModels,
-  showSavedModels,
   apiKeyInput,
   customApiKey,
   chatSavePath,
@@ -92,13 +87,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   onAssistantChange,
   onCustomPromptChange,
   onSaveCustomPrompt,
-  onCancelCustomPrompt,
-  onModelChange,
+  onCancelCustomPrompt,  onModelChange,
   onLoadModels,
   onCreateModelClick,
-  onToggleSavedModels,
   onLoadModel,
   onDeleteModel,
+  onUpdateModel,
   onApiKeyChange,
   onSaveApiKey,
   onRemoveApiKey,
@@ -149,18 +143,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 onModelChange={onModelChange}
                 onLoadModels={onLoadModels}
               />
-            )}
-
-            {activeTab === 'custom-models' && (
+            )}            {activeTab === 'custom-models' && (
               <CustomModelsSettings
                 savedCustomModels={savedCustomModels}
-                showSavedModels={showSavedModels}
                 onCreateModelClick={onCreateModelClick}
-                onToggleSavedModels={onToggleSavedModels}
                 onLoadModel={onLoadModel}
                 onDeleteModel={onDeleteModel}
+                onUpdateModel={onUpdateModel}
               />
-            )}            {activeTab === 'api' && (
+            )}{activeTab === 'api' && (
               <ApiSettings
                 apiKeyInput={apiKeyInput}
                 customApiKey={customApiKey}

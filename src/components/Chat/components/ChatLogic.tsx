@@ -36,9 +36,8 @@ export interface ChatLogicRenderProps {
   selectedModel: string;
   modelsLoading: boolean;
   modelsError: string | null;
-    // Custom models state
+  // Custom models state
   savedCustomModels: SavedCustomModel[];
-  showSavedModels: boolean;
   showCreateModelModal: boolean;
   newModelTitle: string;
   newModelPrompt: string;
@@ -82,9 +81,10 @@ export interface ChatLogicRenderProps {
   handleClearApiKey: () => void;
   handleToggleChatSidebar: () => void;
   handleLoadChat: (chat: ChatHistory) => void;
-  handleDeleteChatFromSidebar: (chatId: string) => void;
-  loadCustomModel: (model: SavedCustomModel) => void;
-  deleteCustomModel: (modelId: string) => void;  openCreateModelModal: () => void;
+  handleDeleteChatFromSidebar: (chatId: string) => void;  loadCustomModel: (model: SavedCustomModel) => void;
+  deleteCustomModel: (modelId: string) => void;
+  updateCustomModel: (model: SavedCustomModel) => void;
+  openCreateModelModal: () => void;
   closeCreateModelModal: () => void;
   saveNewModelFromModal: () => void;
   testNewModel: () => Promise<void>;
@@ -96,11 +96,9 @@ export interface ChatLogicRenderProps {
   setCustomPrompt: (prompt: string) => void;
   setShowSettingsPopup: (show: boolean) => void;
   setShowCustomPromptForm: (show: boolean) => void;
-  setActiveSettingsTab: (tab: ReturnType<typeof useSettings>['activeSettingsTab']) => void;
-  setApiKeyInput: (key: string) => void;
+  setActiveSettingsTab: (tab: ReturnType<typeof useSettings>['activeSettingsTab']) => void;  setApiKeyInput: (key: string) => void;
   setNewModelTitle: (title: string) => void;
   setNewModelPrompt: (prompt: string) => void;
-  setShowSavedModels: (show: boolean) => void;
   setShowChatSidebar: (show: boolean) => void;
   
   // Chat history actions
@@ -297,10 +295,7 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
       text: `Ciao! Sono il tuo assistente personalizzato "${model.title}". Come posso aiutarti oggi?`,
       sender: 'bot',
       timestamp: new Date(),
-    }]);
-
-    chat.setChatHistory([{ role: 'system', content: model.prompt }]);
-    customModels.setShowSavedModels(false);
+    }]);    chat.setChatHistory([{ role: 'system', content: model.prompt }]);
     chat.setError(null);
 
     // Forza il focus sull'input field
@@ -373,10 +368,8 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
     
     availableModels: models.availableModels,
     selectedModel: models.selectedModel,
-    modelsLoading: models.modelsLoading,
-    modelsError: models.modelsError,
-      savedCustomModels: customModels.savedCustomModels,
-    showSavedModels: customModels.showSavedModels,
+    modelsLoading: models.modelsLoading,    modelsError: models.modelsError,
+    savedCustomModels: customModels.savedCustomModels,
     showCreateModelModal: customModels.showCreateModelModal,
     newModelTitle: customModels.newModelTitle,
     newModelPrompt: customModels.newModelPrompt,
@@ -416,9 +409,10 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
     handleClearApiKey: apiKey.handleClearApiKey,
     handleToggleChatSidebar,
     handleLoadChat,
-    handleDeleteChatFromSidebar,
-    loadCustomModel,
-    deleteCustomModel: customModels.deleteCustomModel,    openCreateModelModal: customModels.openCreateModelModal,
+    handleDeleteChatFromSidebar,    loadCustomModel,
+    deleteCustomModel: customModels.deleteCustomModel,
+    updateCustomModel: customModels.updateCustomModel,
+    openCreateModelModal: customModels.openCreateModelModal,
     closeCreateModelModal: customModels.closeCreateModelModal,
     saveNewModelFromModal,
     testNewModel,
@@ -430,11 +424,9 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
     setCustomPrompt: chat.setCustomPrompt,
     setShowSettingsPopup: settings.setShowSettingsPopup,
     setShowCustomPromptForm: settings.setShowCustomPromptForm,
-    setActiveSettingsTab: settings.setActiveSettingsTab,
-    setApiKeyInput: apiKey.setApiKeyInput,
+    setActiveSettingsTab: settings.setActiveSettingsTab,    setApiKeyInput: apiKey.setApiKeyInput,
     setNewModelTitle: customModels.setNewModelTitle,
     setNewModelPrompt: customModels.setNewModelPrompt,
-    setShowSavedModels: customModels.setShowSavedModels,
     setShowChatSidebar: chatHistory.setShowChatSidebar,
     
     // Chat history actions
