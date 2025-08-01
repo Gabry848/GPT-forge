@@ -22,7 +22,7 @@
   "dependencies": {
     "electron-updater": "^6.3.9",
     "node-microphone": "^0.1.6",
-    "openai": "^4.100.0",
+    "openai": "^5.11.0",
     "react-icons": "^5.5.0",
     "react-markdown": "^10.1.0",
     "react-speech-recognition": "^4.0.1"
