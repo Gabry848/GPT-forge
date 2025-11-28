@@ -1,21 +1,57 @@
 import { ipcRenderer, contextBridge } from 'electron'
 
+// ===== FIX CRITICO: Whitelist canali IPC permessi =====
+const ALLOWED_CHANNELS = [
+  'main-process-message',
+  'select-folder',
+  'validate-chat-save-path',
+  'open-folder',
+  'save-chat-file',
+  'load-chat-history',
+  'delete-chat-file',
+  'clear-chat-history',
+  'export-all-chats',
+  'secure-set-api-key',
+  'secure-get-api-key',
+  'secure-remove-api-key',
+] as const
+
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {
   on(...args: Parameters<typeof ipcRenderer.on>) {
     const [channel, listener] = args
+    // FIX: Validazione canale
+    if (!ALLOWED_CHANNELS.includes(channel as any)) {
+      console.error(`IPC channel '${channel}' not allowed`)
+      throw new Error(`IPC channel '${channel}' not allowed`)
+    }
     return ipcRenderer.on(channel, (event, ...args) => listener(event, ...args))
   },
   off(...args: Parameters<typeof ipcRenderer.off>) {
     const [channel, ...omit] = args
+    // FIX: Validazione canale
+    if (!ALLOWED_CHANNELS.includes(channel as any)) {
+      console.error(`IPC channel '${channel}' not allowed`)
+      throw new Error(`IPC channel '${channel}' not allowed`)
+    }
     return ipcRenderer.off(channel, ...omit)
   },
   send(...args: Parameters<typeof ipcRenderer.send>) {
     const [channel, ...omit] = args
+    // FIX: Validazione canale
+    if (!ALLOWED_CHANNELS.includes(channel as any)) {
+      console.error(`IPC channel '${channel}' not allowed`)
+      throw new Error(`IPC channel '${channel}' not allowed`)
+    }
     return ipcRenderer.send(channel, ...omit)
   },
   invoke(...args: Parameters<typeof ipcRenderer.invoke>) {
     const [channel, ...omit] = args
+    // FIX: Validazione canale
+    if (!ALLOWED_CHANNELS.includes(channel as any)) {
+      console.error(`IPC channel '${channel}' not allowed`)
+      throw new Error(`IPC channel '${channel}' not allowed`)
+    }
     return ipcRenderer.invoke(channel, ...omit)
   },
 
@@ -29,18 +65,18 @@ contextBridge.exposeInMainWorld('electronSpeechAPI', {
   requestMicrophoneAccess: async () => {
     try {
       // Richiede esplicitamente il permesso per il microfono
-      const stream = await navigator.mediaDevices.getUserMedia({ 
+      const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true
-        } 
+        }
       });
-      
+
       // Verifica se lo stream è attivo
       const tracks = stream.getAudioTracks();
       const hasActiveTracks = tracks.some(track => track.enabled && track.readyState === 'live');
-      
+
       // Log delle informazioni per debug
       console.log('Stream microfono:', stream);
       console.log('Tracce audio:', tracks.map(t => ({
@@ -49,17 +85,17 @@ contextBridge.exposeInMainWorld('electronSpeechAPI', {
         muted: t.muted,
         readyState: t.readyState
       })));
-      
+
       // Rilascia lo stream dopo aver ottenuto il permesso
       stream.getTracks().forEach(track => track.stop());
-      
+
       return hasActiveTracks;
     } catch (error) {
       console.error('Errore nell\'accesso al microfono:', error);
       return false;
     }
   },
-  
+
   // Verifica se il microfono è disponibile
   checkMicrophoneAvailability: async () => {
     try {
@@ -70,6 +106,13 @@ contextBridge.exposeInMainWorld('electronSpeechAPI', {
       return false;
     }
   }
+});
+
+// ===== FIX CRITICO: API per gestione sicura API key =====
+contextBridge.exposeInMainWorld('secureStorage', {
+  setApiKey: (apiKey: string) => ipcRenderer.invoke('secure-set-api-key', apiKey),
+  getApiKey: () => ipcRenderer.invoke('secure-get-api-key'),
+  removeApiKey: () => ipcRenderer.invoke('secure-remove-api-key'),
 });
 
 // --------- Preload scripts loading ---------

@@ -18,13 +18,35 @@ interface MessageBubbleProps {
 const CodeBlockWithCopy = ({ children }: { children: React.ReactNode }) => {
   const codeRef = useRef<HTMLPreElement>(null);
   const [copied, setCopied] = React.useState(false);
-  
-  const handleCopy = () => {
+
+  // FIX MEDIA: Gestione errori clipboard con fallback
+  const handleCopy = async () => {
     if (codeRef.current) {
       const text = codeRef.current.innerText;
-      navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1200);
+      try {
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1200);
+      } catch (error) {
+        console.error('Errore nella copia negli appunti:', error);
+        // Fallback: crea textarea temporaneo
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1200);
+        } catch (fallbackError) {
+          console.error('Fallback copy failed:', fallbackError);
+          alert('Impossibile copiare negli appunti');
+        } finally {
+          document.body.removeChild(textarea);
+        }
+      }
     }
   };
 
@@ -47,8 +69,28 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onRegenerateResp
     });
   };
 
-  const handleCopyMessage = () => {
-    navigator.clipboard.writeText(message.text);
+  // FIX MEDIA: Gestione errori clipboard
+  const handleCopyMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(message.text);
+    } catch (error) {
+      console.error('Errore nella copia del messaggio:', error);
+      // Fallback
+      const textarea = document.createElement('textarea');
+      textarea.value = message.text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+      } catch (fallbackError) {
+        console.error('Fallback copy failed:', fallbackError);
+        alert('Impossibile copiare il messaggio');
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    }
   };
 
   const handleRegenerateResponse = () => {
@@ -57,10 +99,30 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, onRegenerateResp
     }
   };
 
-  const handleShareMessage = () => {
-    // Logica per condividere il messaggio (da implementare)
-    navigator.clipboard.writeText(message.text);
-    console.log('Messaggio copiato per condivisione');
+  // FIX MEDIA: Gestione errori clipboard
+  const handleShareMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(message.text);
+      console.log('Messaggio copiato per condivisione');
+    } catch (error) {
+      console.error('Errore nella condivisione del messaggio:', error);
+      // Fallback
+      const textarea = document.createElement('textarea');
+      textarea.value = message.text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        console.log('Messaggio copiato per condivisione (fallback)');
+      } catch (fallbackError) {
+        console.error('Fallback copy failed:', fallbackError);
+        alert('Impossibile condividere il messaggio');
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    }
   };
 
   return (
