@@ -35,22 +35,44 @@ export const useMessageHandler = (
       return false;
     }
 
+    // Crea un messaggio bot vuoto per lo streaming
+    const botMessageId = Date.now() + 1;
+    const botMessage: Message = {
+      id: botMessageId,
+      text: '',
+      sender: 'bot',
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, botMessage]);
+
+    // Accumulatore per il testo completo
+    let accumulatedText = '';
+
     const result = await OpenRouterService.sendMessage(
       apiKey,
       selectedModel,
       chatHistory,
-      userMessage.text
+      userMessage.text,
+      // Callback per streaming
+      (chunk: string) => {
+        accumulatedText += chunk;
+        setMessages(prev =>
+          prev.map(msg =>
+            msg.id === botMessageId ? { ...msg, text: accumulatedText } : msg
+          )
+        );
+        setCurrentBotMessage(accumulatedText);
+      }
     );
 
     if (result.success && result.response) {
-      const botMessage: Message = {
-        id: Date.now() + 1,
-        text: result.response,
-        sender: 'bot',
-        timestamp: new Date(),
-      };
-
-      setMessages(prev => [...prev, botMessage]);
+      // Aggiorna il messaggio finale con il testo completo
+      setMessages(prev =>
+        prev.map(msg =>
+          msg.id === botMessageId ? { ...msg, text: result.response! } : msg
+        )
+      );
       setCurrentBotMessage(result.response);
 
       // Aggiorna la cronologia della chat
@@ -60,20 +82,22 @@ export const useMessageHandler = (
         { role: 'assistant', content: result.response! }
       ]);
     } else {
+      // Rimuovi il messaggio bot vuoto in caso di errore
+      setMessages(prev => prev.filter(msg => msg.id !== botMessageId));
       setError(result.error || 'Errore sconosciuto');
     }
 
     setIsTyping(false);
     return result.success;
   }, [
-    isTyping, 
-    setMessages, 
-    setIsTyping, 
-    setError, 
-    setCurrentBotMessage, 
-    getApiKey, 
-    selectedModel, 
-    chatHistory, 
+    isTyping,
+    setMessages,
+    setIsTyping,
+    setError,
+    setCurrentBotMessage,
+    getApiKey,
+    selectedModel,
+    chatHistory,
     setChatHistory
   ]);
   const handleRegenerateResponse = useCallback(async (messageId: number) => {

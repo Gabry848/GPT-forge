@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { findAssistantById } from '../../../config/prompts';
 import {
   useChat,
@@ -131,22 +131,46 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
     models.selectedModel
   );
 
+  // FIX ALTA: Race condition - usa ref per tracciare stato di salvataggio
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isSavingRef = useRef(false);
+
   // Auto-save chat when messages change
   useEffect(() => {
     if (chat.messages.length > 1) {
-      const timeoutId = setTimeout(() => {
-        chatHistory.autoSaveCurrentChat(
-          chat.messages,
-          chat.currentChatId,
-          chat.setCurrentChatId,
-          chat.currentAssistant.name,
-          models.selectedModel
-        );
+      // Cancella timeout precedente
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+
+      // Crea nuovo timeout
+      saveTimeoutRef.current = setTimeout(async () => {
+        // Previeni salvataggi multipli simultanei
+        if (isSavingRef.current) {
+          return;
+        }
+
+        isSavingRef.current = true;
+        try {
+          await chatHistory.autoSaveCurrentChat(
+            chat.messages,
+            chat.currentChatId,
+            chat.setCurrentChatId,
+            chat.currentAssistant.name,
+            models.selectedModel
+          );
+        } finally {
+          isSavingRef.current = false;
+        }
       }, 2000);
-      
-      return () => clearTimeout(timeoutId);
+
+      return () => {
+        if (saveTimeoutRef.current) {
+          clearTimeout(saveTimeoutRef.current);
+        }
+      };
     }
-  }, [chat.messages, chatHistory.autoSaveChats, chatHistory.chatSavePath]);
+  }, [chat.messages.length, chatHistory.autoSaveChats, chatHistory.chatSavePath]);
 
   // Load models when settings popup opens
   useEffect(() => {
@@ -154,6 +178,15 @@ export const ChatLogic: React.FC<ChatLogicProps> = ({ children }) => {
       models.loadAvailableModels();
     }
   }, [settings.showSettingsPopup]);
+
+  // FIX ALTA: Mostra le impostazioni se la sidebar viene aperta senza percorso di salvataggio
+  useEffect(() => {
+    if (chatHistory.showChatSidebar && !chatHistory.chatSavePath) {
+      settings.setShowSettingsPopup(true);
+      // Chiudi la sidebar per evitare confusione
+      chatHistory.setShowChatSidebar(false);
+    }
+  }, [chatHistory.showChatSidebar, chatHistory.chatSavePath]);
 
   // Event handlers
   const handleNewChat = () => {

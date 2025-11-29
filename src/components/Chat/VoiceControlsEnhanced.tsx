@@ -74,12 +74,12 @@ const VoiceControlsEnhanced: React.FC<VoiceControlsProps> = ({ onTextReceived, i
     }
   }, []);
 
-  // Inizializzazione delle voci disponibili
+  // FIX ALTA: Memory leak - Inizializzazione delle voci disponibili
   useEffect(() => {
     const loadVoices = () => {
       const availableVoices = window.speechSynthesis.getVoices();
       setVoices(availableVoices);
-      
+
       // Seleziona una voce italiana se disponibile
       const italianVoice = availableVoices.find(voice => voice.lang.includes('it'));
       if (italianVoice) {
@@ -88,18 +88,22 @@ const VoiceControlsEnhanced: React.FC<VoiceControlsProps> = ({ onTextReceived, i
         setSelectedVoice(availableVoices[0].name);
       }
     };
-    
+
     if (window.speechSynthesis) {
       if (window.speechSynthesis.onvoiceschanged !== undefined) {
         window.speechSynthesis.onvoiceschanged = loadVoices;
       }
       loadVoices();
     }
-    
-    // Pulizia quando il componente viene smontato
+
+    // FIX: Pulizia quando il componente viene smontato
     return () => {
       if (window.speechSynthesis) {
         window.speechSynthesis.cancel();
+        // Rimuovi listener per prevenire memory leak
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+          window.speechSynthesis.onvoiceschanged = null;
+        }
       }
     };
   }, []);

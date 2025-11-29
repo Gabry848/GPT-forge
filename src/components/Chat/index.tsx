@@ -138,14 +138,7 @@ const Chat: React.FC = () => {
             </div>
           </div>
 
-          {/* Mostra le impostazioni se la sidebar viene aperta senza percorso di salvataggio */}
-          {React.useEffect(() => {
-            if (props.showChatSidebar && !props.chatSavePath) {
-              props.setShowSettingsPopup(true);
-              // Opzionale: chiudi la sidebar per evitare confusione
-              props.setShowChatSidebar(false);
-            }
-          }, [props.showChatSidebar, props.chatSavePath])}
+          {/* FIX ALTA: Rimosso useEffect dal JSX - spostato in ChatLogic.tsx */}
         </>
       )}
     </ChatLogic>
